@@ -2,52 +2,14 @@ import {createStore} from 'redux'
 
 
 // step 3 define reducer
-const reducer = function (state = {books: []}, action) {
-
-    switch (action.type) {
-        case 'POST_BOOK':
-        // using concat vrs spread
-        // let books = state.books.concat(action.payload)
-        // return {books} 
-        return {books: [...state.books, ...action.payload]}
-        
-        case 'DELETE_BOOK':
-        const bookToDelete = [...state.books]
-        const indexToDelete = bookToDelete.findIndex((book) => {
-            return book.id === action.payload.id
-        })
-        return {books: [
-            ...bookToDelete.slice(0, indexToDelete),
-            ...bookToDelete.slice(indexToDelete + 1)
-            ]}
-
-        case 'UPDATE_BOOK':
-        const updatedBooks = [...state.books]
-        const updatedIndex = updatedBooks.findIndex((book) => {
-            return book.id === action.payload.id
-        })
-        // const updateBook = updatedBooks[updatedIndex]
-        // updateBook.title = action.payload.title
-        // Doing the same thing with the spread operator
-        const updateBook = {
-            ...updatedBooks[updatedIndex],
-            title: action.payload.title
-        }
-
-        console.log('changed title', updateBook)
-        return {
-            books: [
-                ...updatedBooks.slice(0, updatedIndex),
-                updateBook,
-                ...updatedBooks.slice(updatedIndex + 1)
-            ]
-        }
-    }
-    return state
-}
+import reducers from './reducers'
 
 // step 1 Create Store
-const store = createStore(reducer)
+const store = createStore(reducers)
+
+// Import Actions
+import {addToCart} from './actions/cartActions'
+import {postBook, deleteBook, updateTitle} from './actions/booksActions'
 
 // look at store state
 store.subscribe(function () {
@@ -56,36 +18,48 @@ store.subscribe(function () {
 
 // step 2 create and dispatch actions
 
-store.dispatch({type: 'POST_BOOK', payload: [{
+store.dispatch(postBook([{
     id: 1,
     title: 'A Test',
     price: 33.33
-}]})
+}]))
 
-store.dispatch({type: 'POST_BOOK', payload: [{
+store.dispatch(postBook([{
     id: 2,
     title: 'Another Test',
     price: 33.33
-}]})
+}]))
 
-store.dispatch({type: 'POST_BOOK', payload: [{
+store.dispatch(postBook([{
     id: 3,
     title: 'Final Test',
     price: 33.33
-}]})
+}]))
 
-store.dispatch({
-    type: 'DELETE_BOOK',
-    payload: {id: 2}
-})
+store.dispatch(postBook([{id: 5, title: 'rugger'}]))
 
-store.dispatch({
-    type: 'UPDATE_BOOK',
-    payload: {
+store.dispatch(deleteBook({id: 2}))
+
+// store.dispatch({
+//     type: 'UPDATE_TITLE',
+//     payload: {
+//         id: 3,
+//         title: 'Changing the Test'
+//     }
+// })
+
+store.dispatch(updateTitle({
         id: 3,
-        title: 'Changing the Test'
-    }
-})
+        title: 'Changing the Tester'
+    }))
+
+// Cart actions
+/* remember we are passing an array to addToCart so we can concat it to our state*/ 
+store.dispatch(addToCart([{id: 4}]))
+store.dispatch(addToCart([{id: 3}]))
+store.dispatch(addToCart([{id: 3}]))
+store.dispatch(addToCart([{id: 3}]))
+
 
 
 

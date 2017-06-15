@@ -741,92 +741,75 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _redux = __webpack_require__(7);
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+var _reducers = __webpack_require__(24);
 
-// step 3 define reducer
-var reducer = function reducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
-    var action = arguments[1];
+var _reducers2 = _interopRequireDefault(_reducers);
 
+var _cartActions = __webpack_require__(28);
 
-    switch (action.type) {
-        case 'POST_BOOK':
-            // using concat vrs spread
-            // let books = state.books.concat(action.payload)
-            // return {books} 
-            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+var _booksActions = __webpack_require__(29);
 
-        case 'DELETE_BOOK':
-            var bookToDelete = [].concat(_toConsumableArray(state.books));
-            var indexToDelete = bookToDelete.findIndex(function (book) {
-                return book.id === action.payload.id;
-            });
-            return { books: [].concat(_toConsumableArray(bookToDelete.slice(0, indexToDelete)), _toConsumableArray(bookToDelete.slice(indexToDelete + 1))) };
-
-        case 'UPDATE_BOOK':
-            var updatedBooks = [].concat(_toConsumableArray(state.books));
-            var updatedIndex = updatedBooks.findIndex(function (book) {
-                return book.id === action.payload.id;
-            }
-            // const updateBook = updatedBooks[updatedIndex]
-            // updateBook.title = action.payload.title
-            // Doing the same thing with the spread operator
-            );var updateBook = _extends({}, updatedBooks[updatedIndex], {
-                title: action.payload.title
-            });
-
-            console.log('changed title', updateBook);
-            return {
-                books: [].concat(_toConsumableArray(updatedBooks.slice(0, updatedIndex)), [updateBook], _toConsumableArray(updatedBooks.slice(updatedIndex + 1)))
-            };
-    }
-    return state;
-};
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // step 1 Create Store
-var store = (0, _redux.createStore)(reducer
+var store = (0, _redux.createStore)(_reducers2.default
+
+// Import Actions
+);
+
+// step 3 define reducer
+
 
 // look at store state
-);store.subscribe(function () {
+store.subscribe(function () {
     console.log('Store state:', store.getState());
 }
 
 // step 2 create and dispatch actions
 
-);store.dispatch({ type: 'POST_BOOK', payload: [{
-        id: 1,
-        title: 'A Test',
-        price: 33.33
-    }] });
+);store.dispatch((0, _booksActions.postBook)([{
+    id: 1,
+    title: 'A Test',
+    price: 33.33
+}]));
 
-store.dispatch({ type: 'POST_BOOK', payload: [{
-        id: 2,
-        title: 'Another Test',
-        price: 33.33
-    }] });
+store.dispatch((0, _booksActions.postBook)([{
+    id: 2,
+    title: 'Another Test',
+    price: 33.33
+}]));
 
-store.dispatch({ type: 'POST_BOOK', payload: [{
-        id: 3,
-        title: 'Final Test',
-        price: 33.33
-    }] });
+store.dispatch((0, _booksActions.postBook)([{
+    id: 3,
+    title: 'Final Test',
+    price: 33.33
+}]));
 
-store.dispatch({
-    type: 'DELETE_BOOK',
-    payload: { id: 2 }
-});
+store.dispatch((0, _booksActions.postBook)([{ id: 5, title: 'rugger' }]));
 
-store.dispatch({
-    type: 'UPDATE_BOOK',
-    payload: {
-        id: 3,
-        title: 'Changing the Test'
-    }
-});
+store.dispatch((0, _booksActions.deleteBook)({ id: 2 })
+
+// store.dispatch({
+//     type: 'UPDATE_TITLE',
+//     payload: {
+//         id: 3,
+//         title: 'Changing the Test'
+//     }
+// })
+
+);store.dispatch((0, _booksActions.updateTitle)({
+    id: 3,
+    title: 'Changing the Tester'
+})
+
+// Cart actions
+/* remember we are passing an array to addToCart so we can concat it to our state*/
+);store.dispatch((0, _cartActions.addToCart)([{ id: 4 }]));
+store.dispatch((0, _cartActions.addToCart)([{ id: 3 }]));
+store.dispatch((0, _cartActions.addToCart)([{ id: 3 }]));
+store.dispatch((0, _cartActions.addToCart)([{ id: 3 }]));
 
 /***/ }),
 /* 9 */
@@ -1399,6 +1382,165 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(7);
+
+var _booksReducer = __webpack_require__(26);
+
+var _cartReducer = __webpack_require__(27);
+
+exports.default = (0, _redux.combineReducers)({
+    books: _booksReducer.booksReducer,
+    cart: _cartReducer.cartReducer
+});
+
+/***/ }),
+/* 25 */,
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.booksReducer = booksReducer;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function booksReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
+    var action = arguments[1];
+
+
+    switch (action.type) {
+        case 'POST_BOOK':
+            // using concat vrs spread
+            // let books = state.books.concat(action.payload)
+            // return {books} 
+            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+
+        case 'DELETE_BOOK':
+            var bookToDelete = [].concat(_toConsumableArray(state.books));
+            var indexToDelete = bookToDelete.findIndex(function (book) {
+                return book.id === action.payload.id;
+            });
+            return { books: [].concat(_toConsumableArray(bookToDelete.slice(0, indexToDelete)), _toConsumableArray(bookToDelete.slice(indexToDelete + 1))) };
+
+        case 'UPDATE_TITLE':
+            var booksArr = [].concat(_toConsumableArray(state.books));
+            var updateIndex = booksArr.findIndex(function (book) {
+                return book.id === action.payload.id;
+            });
+            var newItem = _extends({}, booksArr[updateIndex], {
+                title: action.payload.title
+            });
+
+            return [].concat(_toConsumableArray(booksArr.slice(0, updateIndex)), [newItem], _toConsumableArray(booksArr.slice(updateIndex + 1)));
+    }
+    return state;
+}
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.cartReducer = cartReducer;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function cartReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { cart: [] };
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'ADD_TO_CART':
+            return { cart: [].concat(_toConsumableArray(state.cart), [action.payload]) };
+    }
+    return state;
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.addToCart = addToCart;
+// Cart Actions
+
+// passing an array with a book object or objects
+function addToCart(book) {
+    return {
+        type: 'ADD_TO_CART',
+        payload: book
+    };
+}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.postBook = postBook;
+exports.deleteBook = deleteBook;
+exports.updateTitle = updateTitle;
+// Books Actions
+
+// to concat our book to books we are passing an object in an array to our functions
+function postBook(book) {
+    return {
+        type: 'POST_BOOK',
+        payload: book
+    };
+}
+
+// passes the function an object with an id to delete
+function deleteBook(book) {
+    return {
+        type: 'DELETE_BOOK',
+        payload: book
+    };
+}
+
+// takes an object with an id and the changed title
+
+function updateTitle(obj) {
+    return {
+        type: 'UPDATE_TITLE',
+        payload: obj
+    };
+}
 
 /***/ })
 /******/ ]);
