@@ -745,14 +745,14 @@ var _redux = __webpack_require__(7);
 
 // step 3 define reducer
 var reducer = function reducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
     var action = arguments[1];
 
+
     switch (action.type) {
-        case 'INC':
-            return state + action.payload;
-        case 'DEC':
-            return state--;
+        case 'POST_BOOK':
+            var books = state.books.concat(action.payload);
+            return { books: books };
     }
     return state;
 };
@@ -762,14 +762,22 @@ var store = (0, _redux.createStore)(reducer
 
 // look at store state
 );store.subscribe(function () {
-    console.log('Store state: ' + store.getState());
+    console.log('Store state:', store.getState());
 }
 
 // step 2 create and dispatch actions
 
-);store.dispatch({ type: 'INC', payload: 1 });
-store.dispatch({ type: 'INC', payload: 1 });
-store.dispatch({ type: 'DEC', payload: 1 });
+);store.dispatch({ type: 'POST_BOOK', payload: [{
+        id: 1,
+        title: 'A Test',
+        price: 33.33
+    }] });
+
+store.dispatch({ type: 'POST_BOOK', payload: [{
+        id: 2,
+        title: 'Another Test',
+        price: 33.33
+    }] });
 
 /***/ }),
 /* 9 */
