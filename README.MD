@@ -1,0 +1,1 @@
+# Building a react app with a Redux Store first, setting up actions and reducers, then adding react for UI
