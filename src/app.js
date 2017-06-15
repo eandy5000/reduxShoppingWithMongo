@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import {Provider} from 'react-redux'
 
 import {createStore, applyMiddleware} from 'redux'
 import logger from 'redux-logger'
@@ -29,7 +30,10 @@ import {postBook, deleteBook, updateTitle} from './actions/booksActions'
 import BooksList from './components/pages/booksList'
 
 ReactDom.render(
-    <BooksList />,
+    <Provider store={store}>
+    <BooksList />
+    </Provider>
+    ,
     root
 )
 
