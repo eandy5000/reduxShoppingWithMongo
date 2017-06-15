@@ -743,6 +743,8 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 
 var _redux = __webpack_require__(7);
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 // step 3 define reducer
 var reducer = function reducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
@@ -751,8 +753,16 @@ var reducer = function reducer() {
 
     switch (action.type) {
         case 'POST_BOOK':
-            var books = state.books.concat(action.payload);
-            return { books: books };
+            // using concat vrs spread
+            // let books = state.books.concat(action.payload)
+            // return {books} 
+            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+        case 'DELETE_BOOK':
+            var bookToDelete = [].concat(_toConsumableArray(state.books));
+            var indexToDelete = bookToDelete.findIndex(function (book) {
+                return book.id === action.payload.id;
+            });
+            return { books: [].concat(_toConsumableArray(bookToDelete.slice(0, indexToDelete)), _toConsumableArray(bookToDelete.slice(indexToDelete + 1))) };
     }
     return state;
 };
@@ -778,6 +788,17 @@ store.dispatch({ type: 'POST_BOOK', payload: [{
         title: 'Another Test',
         price: 33.33
     }] });
+
+store.dispatch({ type: 'POST_BOOK', payload: [{
+        id: 3,
+        title: 'Final Test',
+        price: 33.33
+    }] });
+
+store.dispatch({
+    type: 'DELETE_BOOK',
+    payload: { id: 2 }
+});
 
 /***/ }),
 /* 9 */

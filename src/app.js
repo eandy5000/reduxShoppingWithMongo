@@ -6,8 +6,19 @@ const reducer = function (state = {books: []}, action) {
 
     switch (action.type) {
         case 'POST_BOOK':
-        let books = state.books.concat(action.payload)
-        return {books}
+        // using concat vrs spread
+        // let books = state.books.concat(action.payload)
+        // return {books} 
+        return {books: [...state.books, ...action.payload]}
+        case 'DELETE_BOOK':
+        const bookToDelete = [...state.books]
+        const indexToDelete = bookToDelete.findIndex((book) => {
+            return book.id === action.payload.id
+        })
+        return {books: [
+            ...bookToDelete.slice(0, indexToDelete),
+            ...bookToDelete.slice(indexToDelete + 1)
+            ]}
     }
     return state
 }
@@ -33,6 +44,17 @@ store.dispatch({type: 'POST_BOOK', payload: [{
     title: 'Another Test',
     price: 33.33
 }]})
+
+store.dispatch({type: 'POST_BOOK', payload: [{
+    id: 3,
+    title: 'Final Test',
+    price: 33.33
+}]})
+
+store.dispatch({
+    type: 'DELETE_BOOK',
+    payload: {id: 2}
+})
 
 
 
