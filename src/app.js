@@ -27,7 +27,7 @@ import {postBook, deleteBook, updateTitle} from './actions/booksActions'
 
 // Components
 
-import BooksList from './components/pages/booksList'
+import BooksList from './components/pages/BooksList'
 
 ReactDom.render(
     <Provider store={store}>
@@ -55,21 +55,21 @@ store.dispatch(postBook([{
     price: 33.33
 }]))
 
-store.dispatch(postBook([{id: 5, title: 'rugger'}]))
+store.dispatch(postBook([{id: 5, title: 'rugger', price: 8}]))
 
-store.dispatch(deleteBook({id: 2}))
+// store.dispatch(deleteBook({id: 2}))
 
-store.dispatch(updateTitle({
-        id: 3,
-        title: 'Changing the Tester'
-    }))
+// store.dispatch(updateTitle({
+//         id: 3,
+//         title: 'Changing the Tester'
+//     }))
 
 // Cart actions
 /* remember we are passing an array to addToCart so we can concat it to our state*/ 
-store.dispatch(addToCart([{id: 4}]))
-store.dispatch(addToCart([{id: 3}]))
-store.dispatch(addToCart([{id: 3}]))
-store.dispatch(addToCart([{id: 3}]))
+// store.dispatch(addToCart([{id: 4}]))
+// store.dispatch(addToCart([{id: 3}]))
+// store.dispatch(addToCart([{id: 3}]))
+// store.dispatch(addToCart([{id: 3}]))
 
 
 

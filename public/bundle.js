@@ -10295,65 +10295,7 @@ function addToCart(book) {
 }
 
 /***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(50);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(219);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BookList = function (_Component) {
-    _inherits(BookList, _Component);
-
-    function BookList() {
-        _classCallCheck(this, BookList);
-
-        return _possibleConstructorReturn(this, (BookList.__proto__ || Object.getPrototypeOf(BookList)).apply(this, arguments));
-    }
-
-    _createClass(BookList, [{
-        key: 'render',
-        value: function render() {
-            console.log(this.props.books);
-            return _react2.default.createElement(
-                'div',
-                null,
-                'test'
-            );
-        }
-    }]);
-
-    return BookList;
-}(_react.Component);
-
-function mapStateToProps(state) {
-    return {
-        books: state.books.books
-    };
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(BookList);
-
-/***/ }),
+/* 91 */,
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10424,9 +10366,9 @@ var _cartActions = __webpack_require__(90);
 
 var _booksActions = __webpack_require__(89);
 
-var _booksList = __webpack_require__(91);
+var _BooksList = __webpack_require__(232);
 
-var _booksList2 = _interopRequireDefault(_booksList);
+var _BooksList2 = _interopRequireDefault(_BooksList);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10453,7 +10395,7 @@ var root = document.querySelector('#app'
 _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
-    _react2.default.createElement(_booksList2.default, null)
+    _react2.default.createElement(_BooksList2.default, null)
 ), root);
 
 store.dispatch((0, _booksActions.postBook)([{
@@ -10474,21 +10416,22 @@ store.dispatch((0, _booksActions.postBook)([{
     price: 33.33
 }]));
 
-store.dispatch((0, _booksActions.postBook)([{ id: 5, title: 'rugger' }]));
+store.dispatch((0, _booksActions.postBook)([{ id: 5, title: 'rugger', price: 8 }])
 
-store.dispatch((0, _booksActions.deleteBook)({ id: 2 }));
+// store.dispatch(deleteBook({id: 2}))
 
-store.dispatch((0, _booksActions.updateTitle)({
-    id: 3,
-    title: 'Changing the Tester'
-})
+// store.dispatch(updateTitle({
+//         id: 3,
+//         title: 'Changing the Tester'
+//     }))
 
 // Cart actions
 /* remember we are passing an array to addToCart so we can concat it to our state*/
-);store.dispatch((0, _cartActions.addToCart)([{ id: 4 }]));
-store.dispatch((0, _cartActions.addToCart)([{ id: 3 }]));
-store.dispatch((0, _cartActions.addToCart)([{ id: 3 }]));
-store.dispatch((0, _cartActions.addToCart)([{ id: 3 }]));
+// store.dispatch(addToCart([{id: 4}]))
+// store.dispatch(addToCart([{id: 3}]))
+// store.dispatch(addToCart([{id: 3}]))
+// store.dispatch(addToCart([{id: 3}]))
+);
 
 /***/ }),
 /* 96 */
@@ -25009,6 +24952,87 @@ function shallowEqual(objA, objB) {
 
   return true;
 }
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(50);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(219);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BookList = function (_Component) {
+    _inherits(BookList, _Component);
+
+    function BookList() {
+        _classCallCheck(this, BookList);
+
+        return _possibleConstructorReturn(this, (BookList.__proto__ || Object.getPrototypeOf(BookList)).apply(this, arguments));
+    }
+
+    _createClass(BookList, [{
+        key: 'render',
+        value: function render() {
+            var books = this.props.books;
+
+            var list = books.map(function (book) {
+                return _react2.default.createElement(
+                    'div',
+                    { key: book.id },
+                    _react2.default.createElement(
+                        'h3',
+                        null,
+                        book.title
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        book.price
+                    )
+                );
+            });
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h2',
+                    null,
+                    'React App'
+                ),
+                list
+            );
+        }
+    }]);
+
+    return BookList;
+}(_react.Component);
+
+function mapStateToProps(state) {
+    return {
+        books: state.books.books
+    };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(BookList);
 
 /***/ })
 /******/ ]);
