@@ -10,6 +10,7 @@ const reducer = function (state = {books: []}, action) {
         // let books = state.books.concat(action.payload)
         // return {books} 
         return {books: [...state.books, ...action.payload]}
+        
         case 'DELETE_BOOK':
         const bookToDelete = [...state.books]
         const indexToDelete = bookToDelete.findIndex((book) => {
@@ -19,6 +20,28 @@ const reducer = function (state = {books: []}, action) {
             ...bookToDelete.slice(0, indexToDelete),
             ...bookToDelete.slice(indexToDelete + 1)
             ]}
+
+        case 'UPDATE_BOOK':
+        const updatedBooks = [...state.books]
+        const updatedIndex = updatedBooks.findIndex((book) => {
+            return book.id === action.payload.id
+        })
+        // const updateBook = updatedBooks[updatedIndex]
+        // updateBook.title = action.payload.title
+        // Doing the same thing with the spread operator
+        const updateBook = {
+            ...updatedBooks[updatedIndex],
+            title: action.payload.title
+        }
+
+        console.log('changed title', updateBook)
+        return {
+            books: [
+                ...updatedBooks.slice(0, updatedIndex),
+                updateBook,
+                ...updatedBooks.slice(updatedIndex + 1)
+            ]
+        }
     }
     return state
 }
@@ -54,6 +77,14 @@ store.dispatch({type: 'POST_BOOK', payload: [{
 store.dispatch({
     type: 'DELETE_BOOK',
     payload: {id: 2}
+})
+
+store.dispatch({
+    type: 'UPDATE_BOOK',
+    payload: {
+        id: 3,
+        title: 'Changing the Test'
+    }
 })
 
 

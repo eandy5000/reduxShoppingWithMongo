@@ -741,6 +741,8 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 "use strict";
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _redux = __webpack_require__(7);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -757,12 +759,30 @@ var reducer = function reducer() {
             // let books = state.books.concat(action.payload)
             // return {books} 
             return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+
         case 'DELETE_BOOK':
             var bookToDelete = [].concat(_toConsumableArray(state.books));
             var indexToDelete = bookToDelete.findIndex(function (book) {
                 return book.id === action.payload.id;
             });
             return { books: [].concat(_toConsumableArray(bookToDelete.slice(0, indexToDelete)), _toConsumableArray(bookToDelete.slice(indexToDelete + 1))) };
+
+        case 'UPDATE_BOOK':
+            var updatedBooks = [].concat(_toConsumableArray(state.books));
+            var updatedIndex = updatedBooks.findIndex(function (book) {
+                return book.id === action.payload.id;
+            }
+            // const updateBook = updatedBooks[updatedIndex]
+            // updateBook.title = action.payload.title
+            // Doing the same thing with the spread operator
+            );var updateBook = _extends({}, updatedBooks[updatedIndex], {
+                title: action.payload.title
+            });
+
+            console.log('changed title', updateBook);
+            return {
+                books: [].concat(_toConsumableArray(updatedBooks.slice(0, updatedIndex)), [updateBook], _toConsumableArray(updatedBooks.slice(updatedIndex + 1)))
+            };
     }
     return state;
 };
@@ -798,6 +818,14 @@ store.dispatch({ type: 'POST_BOOK', payload: [{
 store.dispatch({
     type: 'DELETE_BOOK',
     payload: { id: 2 }
+});
+
+store.dispatch({
+    type: 'UPDATE_BOOK',
+    payload: {
+        id: 3,
+        title: 'Changing the Test'
+    }
 });
 
 /***/ }),
