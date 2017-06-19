@@ -1,6 +1,9 @@
 export function booksReducer (state = {books: []}, action) {
 
     switch (action.type) {
+        case 'GET_BOOKS':
+        
+
         case 'POST_BOOK':
         // using concat vrs spread
         // let books = state.books.concat(action.payload)

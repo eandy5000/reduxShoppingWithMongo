@@ -18,15 +18,6 @@ const root = document.querySelector('#app')
 import {addToCart} from './actions/cartActions'
 import {postBook, deleteBook, updateTitle} from './actions/booksActions'
 
-// look at store state ** replacing with middleware
-// store.subscribe(function () {
-//     console.log('Store state:', store.getState())
-// })
-
-// step 2 create and dispatch actions
-
-// Components
-
 import BooksList from './components/pages/BooksList'
 
 ReactDom.render(
@@ -55,21 +46,8 @@ store.dispatch(postBook([{
     price: 33.33
 }]))
 
-store.dispatch(postBook([{id: 5, title: 'rugger', price: 8}]))
+store.dispatch(postBook([{id: 5, title: 'Much Later', price: 8}]))
 
-// store.dispatch(deleteBook({id: 2}))
-
-// store.dispatch(updateTitle({
-//         id: 3,
-//         title: 'Changing the Tester'
-//     }))
-
-// Cart actions
-/* remember we are passing an array to addToCart so we can concat it to our state*/ 
-// store.dispatch(addToCart([{id: 4}]))
-// store.dispatch(addToCart([{id: 3}]))
-// store.dispatch(addToCart([{id: 3}]))
-// store.dispatch(addToCart([{id: 3}]))
 
 
 

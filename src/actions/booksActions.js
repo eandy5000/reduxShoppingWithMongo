@@ -1,5 +1,12 @@
 // Books Actions
 
+// Get Books, no payload
+export function getBooks() {
+    return {
+        type: 'GET_BOOKS'
+    }
+}
+
 // to concat our book to books we are passing an object in an array to our functions
 export function postBook(book) {
     return {

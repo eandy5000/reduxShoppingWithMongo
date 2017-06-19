@@ -10243,10 +10243,18 @@ function warning(message) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.getBooks = getBooks;
 exports.postBook = postBook;
 exports.deleteBook = deleteBook;
 exports.updateTitle = updateTitle;
 // Books Actions
+
+// Get Books, no payload
+function getBooks() {
+    return {
+        type: 'GET_BOOKS'
+    };
+}
 
 // to concat our book to books we are passing an object in an array to our functions
 function postBook(book) {
@@ -10383,15 +10391,6 @@ var root = document.querySelector('#app'
 // Import Actions
 );
 
-// look at store state ** replacing with middleware
-// store.subscribe(function () {
-//     console.log('Store state:', store.getState())
-// })
-
-// step 2 create and dispatch actions
-
-// Components
-
 _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
@@ -10416,22 +10415,7 @@ store.dispatch((0, _booksActions.postBook)([{
     price: 33.33
 }]));
 
-store.dispatch((0, _booksActions.postBook)([{ id: 5, title: 'rugger', price: 8 }])
-
-// store.dispatch(deleteBook({id: 2}))
-
-// store.dispatch(updateTitle({
-//         id: 3,
-//         title: 'Changing the Tester'
-//     }))
-
-// Cart actions
-/* remember we are passing an array to addToCart so we can concat it to our state*/
-// store.dispatch(addToCart([{id: 4}]))
-// store.dispatch(addToCart([{id: 3}]))
-// store.dispatch(addToCart([{id: 3}]))
-// store.dispatch(addToCart([{id: 3}]))
-);
+store.dispatch((0, _booksActions.postBook)([{ id: 5, title: 'Much Later', price: 8 }]));
 
 /***/ }),
 /* 96 */
@@ -10456,6 +10440,8 @@ function booksReducer() {
 
 
     switch (action.type) {
+        case 'GET_BOOKS':
+
         case 'POST_BOOK':
             // using concat vrs spread
             // let books = state.books.concat(action.payload)
