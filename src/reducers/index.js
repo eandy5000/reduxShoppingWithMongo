@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
+import {counterReducer} from './countReducer.js'
 import {booksReducer} from './booksReducer.js'
-import {cartReducer} from './cartReducer'
 
 export default combineReducers({
-    books: booksReducer,
-    cart: cartReducer
+    count: counterReducer,
+    books: booksReducer
 })

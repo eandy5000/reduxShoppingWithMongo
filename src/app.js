@@ -1,54 +1,31 @@
 import React from 'react'
-import ReactDom from 'react-dom'
+import ReactDOM from 'react-dom'
+import {createStore} from 'redux'
 import {Provider} from 'react-redux'
+import reducer from './reducers/index.js'
+//actions
+import {inc, dec} from './actions/countActions'
+import {getBooks, addBook, updateTitle, deleteBook} from './actions/booksActions'
 
-import {createStore, applyMiddleware} from 'redux'
-import logger from 'redux-logger'
+const store = createStore(reducer)
 
-
-// step 3 define reducer
-import reducers from './reducers'
-
-// step 1 Create Store adding logging middleware
-const middleware = applyMiddleware(logger)
-const store = createStore(reducers, middleware)
+// dom and components
 const root = document.querySelector('#app')
+import BookList from './components/BookList'
 
-// Import Actions
-import {addToCart} from './actions/cartActions'
-import {postBook, deleteBook, updateTitle} from './actions/booksActions'
+store.subscribe(function () {
+    console.log('store: ', store.getState().books)
+})
 
-import BooksList from './components/pages/BooksList'
+store.dispatch(getBooks())
 
-ReactDom.render(
+ReactDOM.render(
     <Provider store={store}>
-    <BooksList />
+        <BookList />
     </Provider>
     ,
     root
 )
-
-store.dispatch(postBook([{
-    id: 1,
-    title: 'A Test',
-    price: 33.33
-}]))
-
-store.dispatch(postBook([{
-    id: 2,
-    title: 'Another Test',
-    price: 33.33
-}]))
-
-store.dispatch(postBook([{
-    id: 3,
-    title: 'Final Test',
-    price: 33.33
-}]))
-
-store.dispatch(postBook([{id: 5, title: 'Much Later', price: 8}]))
-
-
 
 
 

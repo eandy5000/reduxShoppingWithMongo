@@ -1,33 +1,26 @@
-// Books Actions
-
-// Get Books, no payload
-export function getBooks() {
+export function getBooks () {
     return {
         type: 'GET_BOOKS'
     }
 }
 
-// to concat our book to books we are passing an object in an array to our functions
-export function postBook(book) {
+export function addBook (payload) {
     return {
-        type: 'POST_BOOK',
-        payload: book
+        type: 'ADD_BOOK',
+        payload
     }
 }
 
-// passes the function an object with an id to delete
-export function deleteBook(book) {
+export function deleteBook (payload) {
     return {
         type: 'DELETE_BOOK',
-        payload: book
+        payload
     }
 }
 
-// takes an object with an id and the changed title
-
-export function updateTitle (obj) {
+export function updateTitle (payload) {
     return {
         type: 'UPDATE_TITLE',
-        payload: obj
+        payload
     }
 }
