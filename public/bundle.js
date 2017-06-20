@@ -23695,6 +23695,20 @@ var BookList = function (_Component) {
     }
 
     _createClass(BookList, [{
+        key: 'list',
+        value: function list() {
+            var books = this.props.books.books;
+
+            console.log(books);
+            return books.map(function (book) {
+                return _react2.default.createElement(
+                    'div',
+                    { key: book.id },
+                    book.title
+                );
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             console.log('props ', this.props.books);
@@ -23705,7 +23719,8 @@ var BookList = function (_Component) {
                     'h2',
                     null,
                     'Hi there'
-                )
+                ),
+                this.list()
             );
         }
     }]);
