@@ -1,6 +1,8 @@
 import {combineReducers} from 'redux'
-import {counterReducer} from './booksReducer.js'
+import {counterReducer} from './countReducer.js'
+import {booksReducer} from './booksReducer.js'
 
 export default combineReducers({
-    count: counterReducer
+    count: counterReducer,
+    books: booksReducer
 })
