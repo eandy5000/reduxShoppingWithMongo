@@ -735,7 +735,27 @@ module.exports = g;
 
 
 /***/ }),
-/* 8 */,
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(0);
+
+var _countReducer = __webpack_require__(27);
+
+exports.default = (0, _redux.combineReducers)({
+    count: _countReducer.countReducer
+});
+
+//reducers
+
+/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -744,25 +764,30 @@ module.exports = g;
 
 var _redux = __webpack_require__(0);
 
-function reducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    var action = arguments[1];
+var _reducers = __webpack_require__(8);
 
-    switch (action.type) {
-        default:
-            return state;
-    }
-}
+var _reducers2 = _interopRequireDefault(_reducers);
 
-var store = (0, _redux.createStore)(reducer);
+var _countActions = __webpack_require__(26);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var store = (0, _redux.createStore)(_reducers2.default);
+
+// actions
+
 
 store.subscribe(function () {
-    console.log('Store: ', store.getState());
+    console.log('Store: ', store.getState().count);
 });
 
 store.dispatch({
-    type: 'TEST'
+    type: 'INC'
 });
+store.dispatch((0, _countActions.inc)());
+store.dispatch((0, _countActions.inc)());
+store.dispatch((0, _countActions.dec)());
+store.dispatch((0, _countActions.zero)());
 
 /***/ }),
 /* 10 */,
@@ -1336,6 +1361,69 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.inc = inc;
+exports.dec = dec;
+exports.zero = zero;
+// count actions
+
+function inc() {
+    return {
+        type: 'INC'
+    };
+}
+
+function dec() {
+    return {
+        type: 'DEC'
+    };
+}
+
+function zero() {
+    return {
+        type: 'ZERO'
+    };
+}
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.countReducer = countReducer;
+function countReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { count: 0 };
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'INC':
+            return { count: state.count + 1 };
+
+        case 'DEC':
+            return { count: state.count - 1 };
+
+        case 'ZERO':
+            return { count: state.count = 0 };
+
+        default:
+            return state;
+    }
+}
 
 /***/ })
 /******/ ]);
