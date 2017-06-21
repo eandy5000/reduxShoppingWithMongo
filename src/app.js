@@ -8,28 +8,10 @@ import {getBooks, addBook, deleteBook, updateTitle} from './actions/booksActions
 const store = createStore(reducer)
 
 store.subscribe(() => {
-    console.log('Store: ', store.getState().books.books)
+    console.log('Store: ', store.getState())
 })
 
 store.dispatch({
     type: 'GET_BOOKS'
 })
 
-store.dispatch(addBook({
-        title: 'The Shinning',
-        id: '7',
-        price: 34
-    }))
-
-store.dispatch(addBook({
-        title: 'asdfsad asdfasdf',
-        id: '9',
-        price: 34
-    }))
-
-store.dispatch(deleteBook({id: 7}))
-
-store.dispatch(updateTitle({
-        id: '9',
-        title: 'Dune'
-    }))
