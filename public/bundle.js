@@ -749,11 +749,13 @@ var _redux = __webpack_require__(0);
 
 var _countReducer = __webpack_require__(27);
 
-exports.default = (0, _redux.combineReducers)({
-    count: _countReducer.countReducer
-});
+var _booksReducer = __webpack_require__(10);
 
 //reducers
+exports.default = (0, _redux.combineReducers)({
+    count: _countReducer.countReducer,
+    books: _booksReducer.booksReducer
+});
 
 /***/ }),
 /* 9 */
@@ -770,27 +772,104 @@ var _reducers2 = _interopRequireDefault(_reducers);
 
 var _countActions = __webpack_require__(26);
 
+var _booksActions = __webpack_require__(28);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// actions
 var store = (0, _redux.createStore)(_reducers2.default);
 
-// actions
-
-
 store.subscribe(function () {
-    console.log('Store: ', store.getState().count);
+    console.log('Store: ', store.getState().books.books);
 });
 
 store.dispatch({
-    type: 'INC'
+    type: 'GET_BOOKS'
 });
-store.dispatch((0, _countActions.inc)());
-store.dispatch((0, _countActions.inc)());
-store.dispatch((0, _countActions.dec)());
-store.dispatch((0, _countActions.zero)());
+
+store.dispatch((0, _booksActions.addBook)({
+    title: 'The Shinning',
+    id: '7',
+    price: 34
+}));
+
+store.dispatch((0, _booksActions.addBook)({
+    title: 'asdfsad asdfasdf',
+    id: '9',
+    price: 34
+}));
+
+store.dispatch((0, _booksActions.deleteBook)({ id: 7 }));
+
+store.dispatch((0, _booksActions.updateTitle)({
+    id: '9',
+    title: 'Dune'
+}));
 
 /***/ }),
-/* 10 */,
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.booksReducer = booksReducer;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var startingBooks = [{
+    title: 'Sandman',
+    id: '0',
+    price: 34
+}, {
+    title: 'Treasure Island',
+    id: '1',
+    price: 5.99
+}, {
+    title: 'Shipwrecked!',
+    id: '2',
+    price: 11.23
+}];
+
+function booksReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'GET_BOOKS':
+            return { books: [].concat(_toConsumableArray(state.books), startingBooks) };
+
+        case 'ADD_BOOK':
+            return { books: [].concat(_toConsumableArray(state.books), [action.payload]) };
+
+        case 'DELETE_BOOK':
+            var delArr = [].concat(_toConsumableArray(state.books));
+            var delInd = delArr.findIndex(function (book) {
+                return book.id === action.payload.id.toString();
+            });
+            return { books: [].concat(_toConsumableArray(delArr.slice(0, delInd)), _toConsumableArray(delArr.slice(delInd + 1))) };
+
+        case 'UPDATE_TITLE':
+            var upArr = [].concat(_toConsumableArray(state.books));
+            var upInd = upArr.findIndex(function (book) {
+                return book.id === action.payload.id;
+            });
+            var upItem = _extends({}, upArr[upInd], { title: action.payload.title });
+
+            return { books: [].concat(_toConsumableArray(upArr.slice(0, upInd)), [upItem], _toConsumableArray(upArr.slice(upInd + 1))) };
+
+        default:
+            return state;
+    }
+}
+
+/***/ }),
 /* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1423,6 +1502,49 @@ function countReducer() {
         default:
             return state;
     }
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.getBooks = getBooks;
+exports.addBook = addBook;
+exports.deleteBook = deleteBook;
+exports.updateTitle = updateTitle;
+// books actions
+
+function getBooks() {
+    return {
+        type: 'GET_BOOKS'
+    };
+}
+
+function addBook(payload) {
+    return {
+        type: 'ADD_BOOK',
+        payload: payload
+    };
+}
+
+function deleteBook(payload) {
+    return {
+        type: 'DELETE_BOOK',
+        payload: payload
+    };
+}
+
+function updateTitle(payload) {
+    return {
+        type: 'UPDATE_TITLE',
+        payload: payload
+    };
 }
 
 /***/ })
