@@ -1,10 +1,15 @@
 import React, {Component} from 'react'
+import {bindActionCreators} from 'redux'
+import {getBooks} from '../actions/booksActions'
 import {connect} from 'react-redux'
 
  class BookList extends Component {
-    list () {
-        const {books} = this.props
+    componentDidMount() {
+        this.props.getBooks()
+    }
 
+    list () {
+        const {books, getBooks} = this.props
         return books.map(book => {
             return (
                 <div key={book.id}>
@@ -31,4 +36,10 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps)(BookList)
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+            getBooks
+        }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookList)

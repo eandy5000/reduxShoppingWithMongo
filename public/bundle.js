@@ -807,10 +807,6 @@ store.subscribe(function () {
     console.log('Store: ', store.getState());
 });
 
-store.dispatch({
-    type: 'GET_BOOKS'
-});
-
 _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
@@ -23700,6 +23696,10 @@ var _react = __webpack_require__(46);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _redux = __webpack_require__(0);
+
+var _booksActions = __webpack_require__(28);
+
 var _reactRedux = __webpack_require__(228);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23720,10 +23720,16 @@ var BookList = function (_Component) {
     }
 
     _createClass(BookList, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.props.getBooks();
+        }
+    }, {
         key: 'list',
         value: function list() {
-            var books = this.props.books;
-
+            var _props = this.props,
+                books = _props.books,
+                getBooks = _props.getBooks;
 
             return books.map(function (book) {
                 return _react2.default.createElement(
@@ -23755,7 +23761,13 @@ function mapStateToProps(state) {
     };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(BookList);
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        getBooks: _booksActions.getBooks
+    }, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookList);
 
 /***/ }),
 /* 212 */

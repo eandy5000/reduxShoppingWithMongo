@@ -18,10 +18,6 @@ store.subscribe(() => {
     console.log('Store: ', store.getState())
 })
 
-store.dispatch({
-    type: 'GET_BOOKS'
-})
-
 ReactDom.render(
     <Provider store={store}>
         <BookList />
