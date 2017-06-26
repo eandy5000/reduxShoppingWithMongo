@@ -14,9 +14,9 @@ import BookList from './components/BookList'
 
 const store = createStore(reducer)
 
-store.subscribe(() => {
-    console.log('Store: ', store.getState())
-})
+// store.subscribe(() => {
+//     console.log('Store: ', store.getState())
+// })
 
 ReactDom.render(
     <Provider store={store}>
