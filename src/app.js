@@ -23,7 +23,6 @@ ReactDom.render(
     <Provider store={store}>
        <div>
             <BookList />
-            <Cart />
        </div>
     </Provider>,
     app

@@ -1,17 +1,17 @@
 const startingBooks = [
     {
         title: 'Sandman',
-        id: '0',
+        _id: '0',
         price: 34
     },
     {
         title: 'Treasure Island',
-        id: '1',
+        _id: '1',
         price: 5.99
     },
     {
         title: 'Shipwrecked!',
-        id: '2',
+        _id: '2',
         price: 11.23
     }
 ]
@@ -27,7 +27,7 @@ export function booksReducer (state = {books: []}, action) {
         case 'DELETE_BOOK':
         const delArr = [...state.books]
         const delInd = delArr
-                            .findIndex(book => book.id === action.payload.id.toString())
+                            .findIndex(book => book._id === action.payload._id.toString())
         return {books: [
             ...delArr.slice(0, delInd),
             ...delArr.slice(delInd + 1)
@@ -36,7 +36,7 @@ export function booksReducer (state = {books: []}, action) {
         case 'UPDATE_TITLE':
         const upArr = [...state.books]
         const upInd = upArr.findIndex( book => {
-            return book.id === action.payload.id
+            return book._id === action.payload._id
         })  
         const upItem = {...upArr[upInd], title: action.payload.title}
 

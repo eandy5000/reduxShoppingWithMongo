@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {Grid, Col, Button, Row} from 'react-bootstrap'
 import BookItem from './BookItem'
 import BookForm from './BookForm'
+import Cart from './Cart'
 
 
  class BookList extends Component {
@@ -17,9 +18,9 @@ import BookForm from './BookForm'
         const {books, getBooks} = this.props
         return books.map(book => {
             return (
-                <Col xs={12} sm={6} md={4} key={book.id}>
+                <Col xs={12} sm={6} md={4} key={book._id}>
                     <BookItem 
-                        id={book.id}
+                        _id={book._id}
                         title={book.title}
                         price={book.price}
                     />
@@ -31,6 +32,9 @@ import BookForm from './BookForm'
     render () {
         return (        
         <Grid>
+            <Row>
+                <Cart />
+            </Row>
             <Row style={{marginTop: '.2em'}}>
             <Col xs={12} sm={6}>
                 <BookForm />

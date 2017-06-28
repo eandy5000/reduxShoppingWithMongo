@@ -18971,6 +18971,10 @@ var _BookForm = __webpack_require__(223);
 
 var _BookForm2 = _interopRequireDefault(_BookForm);
 
+var _Cart = __webpack_require__(219);
+
+var _Cart2 = _interopRequireDefault(_Cart);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19005,9 +19009,9 @@ var BookList = function (_Component) {
             return books.map(function (book) {
                 return _react2.default.createElement(
                     _reactBootstrap.Col,
-                    { xs: 12, sm: 6, md: 4, key: book.id },
+                    { xs: 12, sm: 6, md: 4, key: book._id },
                     _react2.default.createElement(_BookItem2.default, {
-                        id: book.id,
+                        _id: book._id,
                         title: book.title,
                         price: book.price
                     })
@@ -19020,6 +19024,11 @@ var BookList = function (_Component) {
             return _react2.default.createElement(
                 _reactBootstrap.Grid,
                 null,
+                _react2.default.createElement(
+                    _reactBootstrap.Row,
+                    null,
+                    _react2.default.createElement(_Cart2.default, null)
+                ),
                 _react2.default.createElement(
                     _reactBootstrap.Row,
                     { style: { marginTop: '.2em' } },
@@ -19068,11 +19077,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _redux = __webpack_require__(51);
+
 var _reactRedux = __webpack_require__(63);
 
 var _reactBootstrap = __webpack_require__(72);
 
 var _cartActions = __webpack_require__(221);
+
+var _helper = __webpack_require__(228);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19111,7 +19124,7 @@ var Cart = function (_Component) {
             var list = this.props.cart.map(function (item) {
                 return _react2.default.createElement(
                     _reactBootstrap.Panel,
-                    { key: item.id },
+                    { key: item._id },
                     _react2.default.createElement(
                         _reactBootstrap.Row,
                         null,
@@ -19122,6 +19135,53 @@ var Cart = function (_Component) {
                                 'h6',
                                 null,
                                 item.title
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 12, sm: 2 },
+                            _react2.default.createElement(
+                                'h6',
+                                null,
+                                (0, _helper.toDollars)(item.price)
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 12, sm: 2 },
+                            _react2.default.createElement(
+                                'h6',
+                                null,
+                                'Qty: ',
+                                _react2.default.createElement(_reactBootstrap.Label, { bsStyle: 'primary' })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 6, sm: 4 },
+                            _react2.default.createElement(
+                                _reactBootstrap.ButtonGroup,
+                                { style: { minWidth: '300px' } },
+                                _react2.default.createElement(
+                                    _reactBootstrap.Button,
+                                    { bsStyle: 'default', bsSize: 'small' },
+                                    '-'
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Button,
+                                    { bsStyle: 'default', bsSize: 'small' },
+                                    '+'
+                                ),
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    '     '
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Button,
+                                    { bsStyle: 'danger', bsSize: 'small' },
+                                    'Delete'
+                                )
                             )
                         )
                     )
@@ -19136,7 +19196,7 @@ var Cart = function (_Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.props.addItem({ title: 'test', id: '23' });
+            // this.props.addItem({title:'test', _id: '23'})
         }
     }]);
 
@@ -19149,7 +19209,13 @@ function mapStateToProps(state) {
     };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { addItem: _cartActions.addItem })(Cart);
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        addItem: _cartActions.addItem
+    }, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cart);
 
 /***/ }),
 /* 220 */
@@ -19249,14 +19315,13 @@ var store = (0, _redux.createStore)(_reducers2.default
 // })
 
 );_reactDom2.default.render(_react2.default.createElement(
-     _reactRedux.Provider,
-     { store: store },
-     _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(_BookList2.default, null),
-          _react2.default.createElement(_Cart2.default, null)
-     )
+   _reactRedux.Provider,
+   { store: store },
+   _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(_BookList2.default, null)
+   )
 ), app);
 
 /***/ }),
@@ -19311,12 +19376,11 @@ var BookForm = function (_Component) {
             var book = {
                 title: (0, _reactDom.findDOMNode)(this.refs.title).value,
                 price: parseFloat((0, _reactDom.findDOMNode)(this.refs.price).value),
-                id: Math.floor(Math.random() * 100000)
+                _id: Math.floor(Math.random() * 100000)
             };
-            this.props.addBook(book
+            this.props.addBook(book);
 
-            // console.log( typeof book.title)
-            );
+            console.log();
         }
     }, {
         key: 'render',
@@ -19396,7 +19460,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _redux = __webpack_require__(51);
+
+var _reactRedux = __webpack_require__(63);
+
 var _helper = __webpack_require__(228);
+
+var _cartActions = __webpack_require__(221);
 
 var _reactBootstrap = __webpack_require__(72);
 
@@ -19418,12 +19488,28 @@ var BookItem = function (_Component) {
     }
 
     _createClass(BookItem, [{
-        key: 'render',
-        value: function render() {
+        key: 'handleCart',
+        value: function handleCart() {
             var _props = this.props,
+                _id = _props._id,
                 price = _props.price,
                 title = _props.title,
-                id = _props.id;
+                addItem = _props.addItem;
+
+            var book = {
+                _id: _id,
+                title: title,
+                price: price
+            };
+            addItem(book);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _props2 = this.props,
+                price = _props2.price,
+                title = _props2.title,
+                _id = _props2._id;
 
             return _react2.default.createElement(
                 _reactBootstrap.Well,
@@ -19446,7 +19532,10 @@ var BookItem = function (_Component) {
                         ),
                         _react2.default.createElement(
                             _reactBootstrap.Button,
-                            { bsStyle: 'primary' },
+                            {
+                                bsStyle: 'primary',
+                                onClick: this.handleCart.bind(this)
+                            },
                             'Buy Me!'
                         )
                     )
@@ -19458,7 +19547,17 @@ var BookItem = function (_Component) {
     return BookItem;
 }(_react.Component);
 
-exports.default = BookItem;
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        addItem: _cartActions.addItem
+    }, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookItem);
 
 /***/ }),
 /* 225 */
@@ -19479,15 +19578,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var startingBooks = [{
     title: 'Sandman',
-    id: '0',
+    _id: '0',
     price: 34
 }, {
     title: 'Treasure Island',
-    id: '1',
+    _id: '1',
     price: 5.99
 }, {
     title: 'Shipwrecked!',
-    id: '2',
+    _id: '2',
     price: 11.23
 }];
 
@@ -19505,14 +19604,14 @@ function booksReducer() {
         case 'DELETE_BOOK':
             var delArr = [].concat(_toConsumableArray(state.books));
             var delInd = delArr.findIndex(function (book) {
-                return book.id === action.payload.id.toString();
+                return book._id === action.payload._id.toString();
             });
             return { books: [].concat(_toConsumableArray(delArr.slice(0, delInd)), _toConsumableArray(delArr.slice(delInd + 1))) };
 
         case 'UPDATE_TITLE':
             var upArr = [].concat(_toConsumableArray(state.books));
             var upInd = upArr.findIndex(function (book) {
-                return book.id === action.payload.id;
+                return book._id === action.payload._id;
             });
             var upItem = _extends({}, upArr[upInd], { title: action.payload.title });
 

@@ -11,11 +11,11 @@ class BookForm extends Component {
         const book = {
             title: findDOMNode(this.refs.title).value,
             price: parseFloat(findDOMNode(this.refs.price).value),
-            id: Math.floor(Math.random() * 100000)
+            _id: Math.floor(Math.random() * 100000)
         }
         this.props.addBook(book)
         
-        // console.log( typeof book.title)
+        console.log()
     }
 
     render () {
