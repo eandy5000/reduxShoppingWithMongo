@@ -19105,9 +19105,13 @@ var Cart = function (_Component) {
     }
 
     _createClass(Cart, [{
+        key: 'onDelete',
+        value: function onDelete(_id) {
+            console.log('wrk');
+        }
+    }, {
         key: 'render',
         value: function render() {
-            console.log(this.props.cart);
             if (this.props.cart[0]) {
                 return this.renderCart();
             }
@@ -19121,6 +19125,8 @@ var Cart = function (_Component) {
     }, {
         key: 'renderCart',
         value: function renderCart() {
+            var _this2 = this;
+
             var list = this.props.cart.map(function (item) {
                 return _react2.default.createElement(
                     _reactBootstrap.Panel,
@@ -19179,7 +19185,11 @@ var Cart = function (_Component) {
                                 ),
                                 _react2.default.createElement(
                                     _reactBootstrap.Button,
-                                    { bsStyle: 'danger', bsSize: 'small' },
+                                    {
+                                        bsStyle: 'danger',
+                                        bsSize: 'small',
+                                        onClick: _this2.onDelete.bind(_this2)
+                                    },
                                     'Delete'
                                 )
                             )
@@ -19211,7 +19221,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
-        addItem: _cartActions.addItem
+        addItem: _cartActions.addItem,
+        deleteItem: _cartActions.deleteItem
     }, dispatch);
 }
 
@@ -19255,12 +19266,20 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.addItem = addItem;
+exports.deleteItem = deleteItem;
 // cart actions
 
 function addItem(payload) {
     return {
         type: 'ADD_ITEM',
         payload: payload
+    };
+}
+
+function deleteItem(cart) {
+    return {
+        type: 'DELETE_ITEM',
+        payload: cart
     };
 }
 
@@ -19643,6 +19662,9 @@ function cartReducer() {
     switch (action.type) {
         case 'ADD_ITEM':
             return { cart: [].concat(_toConsumableArray(state.cart), [action.payload]) };
+
+        case 'DELETE_ITEM':
+            console.log('in reducer', action.payload);
 
         default:
             return state;

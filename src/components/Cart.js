@@ -2,12 +2,15 @@ import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Panel, Col, Row, Well, Button, ButtonGroup, Label} from 'react-bootstrap'
-import {addItem} from '../actions/cartActions'
+import {addItem, deleteItem} from '../actions/cartActions'
 import {toDollars} from '../util/helper'
 
 class Cart extends Component {
+    onDelete(_id) {
+        console.log('wrk')
+    }
+    
     render() {
-        console.log(this.props.cart)
         if (this.props.cart[0]) {
             return this.renderCart()
         }
@@ -39,7 +42,11 @@ class Cart extends Component {
                                 <Button bsStyle="default" bsSize="small">-</Button>
                                 <Button bsStyle="default" bsSize="small">+</Button>
                                 <span>     </span>
-                                <Button bsStyle="danger" bsSize="small">Delete</Button>
+                                <Button 
+                                    bsStyle="danger" 
+                                    bsSize="small"
+                                    onClick={this.onDelete.bind(this)}
+                                >Delete</Button>
                             </ButtonGroup>
                         </Col>
                     </Row>
@@ -65,7 +72,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        addItem
+        addItem,
+        deleteItem
     }, dispatch)
 }
 
