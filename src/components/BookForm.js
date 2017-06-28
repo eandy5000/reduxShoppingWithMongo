@@ -14,6 +14,7 @@ class BookForm extends Component {
             id: Math.floor(Math.random() * 100000)
         }
         this.props.addBook(book)
+        
         // console.log( typeof book.title)
     }
 
