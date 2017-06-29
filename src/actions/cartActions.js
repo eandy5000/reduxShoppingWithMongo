@@ -13,3 +13,11 @@ export function deleteItem (cart) {
         payload: cart
     }
 }
+
+export function updateCart (_id, unit) {
+    return {
+        type: 'UPDATE_CART',
+        _id,
+        unit
+    }
+}

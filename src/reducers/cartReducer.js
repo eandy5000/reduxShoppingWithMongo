@@ -7,6 +7,20 @@ export function cartReducer (state = {cart: []}, action) {
         console.log('in reducer', action.payload)
         return {cart: [...action.payload]}
 
+        case 'UPDATE_CART':
+        const upArr = [...state.cart]
+        const upIndex = upArr.findIndex(updatedItem => updatedItem._id === action._id)
+        const newItem = {
+            ...upArr[upIndex],
+            qty: upArr[upIndex].qty + action.unit
+        }
+       
+       return {cart: [
+           ...upArr.slice(0, upIndex),
+           newItem,
+           ...upArr.slice(upIndex + 1)
+       ]}
+
         default:
         return state
     }

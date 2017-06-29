@@ -38,7 +38,7 @@ class Cart extends Component {
                             <h6>{toDollars(item.price)}</h6>
                         </Col>
                         <Col xs={12} sm={2}>
-                            <h6>Qty: <Label bsStyle="primary"></Label></h6>
+                            <h6>Qty: <Label bsStyle="success">{item.qty}</Label></h6>
                         </Col>
                         <Col xs={6} sm={4}>
                             <ButtonGroup style={{minWidth: '300px'}}>
