@@ -1,17 +1,19 @@
+import {randomId} from '../util/helper'
+
 const startingBooks = [
     {
         title: 'Sandman',
-        _id: Math.floor(Math.random() * 100000),
+        _id: randomId(),
         price: 34
     },
     {
         title: 'Treasure Island',
-        _id: Math.floor(Math.random() * 100000),
+        _id: randomId(),
         price: 5.99
     },
     {
         title: 'Shipwrecked!',
-        _id: Math.floor(Math.random() * 100000),
+        _id: randomId(),
         price: 11.23
     }
 ]

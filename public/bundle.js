@@ -19375,6 +19375,8 @@ var _reactRedux = __webpack_require__(63);
 
 var _reactBootstrap = __webpack_require__(72);
 
+var _helper = __webpack_require__(228);
+
 var _booksActions = __webpack_require__(85);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -19384,6 +19386,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 // actions
 
 
@@ -19402,7 +19405,7 @@ var BookForm = function (_Component) {
             var book = {
                 title: (0, _reactDom.findDOMNode)(this.refs.title).value,
                 price: parseFloat((0, _reactDom.findDOMNode)(this.refs.price).value),
-                _id: Math.floor(Math.random() * 100000)
+                _id: (0, _helper.randomId)()
             };
             this.props.addBook(book);
 
@@ -19600,19 +19603,21 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.booksReducer = booksReducer;
 
+var _helper = __webpack_require__(228);
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var startingBooks = [{
     title: 'Sandman',
-    _id: Math.floor(Math.random() * 100000),
+    _id: (0, _helper.randomId)(),
     price: 34
 }, {
     title: 'Treasure Island',
-    _id: Math.floor(Math.random() * 100000),
+    _id: (0, _helper.randomId)(),
     price: 5.99
 }, {
     title: 'Shipwrecked!',
-    _id: Math.floor(Math.random() * 100000),
+    _id: (0, _helper.randomId)(),
     price: 11.23
 }];
 
@@ -19720,10 +19725,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.toDollars = toDollars;
+exports.randomId = randomId;
 //helper functions
 
 function toDollars(num) {
     return "$" + num.toFixed(2);
+}
+
+function randomId() {
+    return Math.floor(Math.random() * 100000);
 }
 
 /***/ }),
