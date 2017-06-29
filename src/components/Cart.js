@@ -7,7 +7,10 @@ import {toDollars} from '../util/helper'
 
 class Cart extends Component {
     onDelete(_id) {
-        console.log('wrk')
+        let cartArr = this.props.cart
+        const delIndex = cartArr.findIndex((item) => item._id === _id)
+        let cartAfterDelete = [...cartArr.slice(0, delIndex), ...cartArr.slice(delIndex + 1)]
+        this.props.deleteItem(cartAfterDelete)
     }
     
     render() {
@@ -45,7 +48,7 @@ class Cart extends Component {
                                 <Button 
                                     bsStyle="danger" 
                                     bsSize="small"
-                                    onClick={this.onDelete.bind(this)}
+                                    onClick={this.onDelete.bind(this, item._id)}
                                 >Delete</Button>
                             </ButtonGroup>
                         </Col>

@@ -1,17 +1,17 @@
 const startingBooks = [
     {
         title: 'Sandman',
-        _id: '0',
+        _id: Math.floor(Math.random() * 100000),
         price: 34
     },
     {
         title: 'Treasure Island',
-        _id: '1',
+        _id: Math.floor(Math.random() * 100000),
         price: 5.99
     },
     {
         title: 'Shipwrecked!',
-        _id: '2',
+        _id: Math.floor(Math.random() * 100000),
         price: 11.23
     }
 ]

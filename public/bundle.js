@@ -19089,6 +19089,8 @@ var _helper = __webpack_require__(228);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19107,7 +19109,12 @@ var Cart = function (_Component) {
     _createClass(Cart, [{
         key: 'onDelete',
         value: function onDelete(_id) {
-            console.log('wrk');
+            var cartArr = this.props.cart;
+            var delIndex = cartArr.findIndex(function (item) {
+                return item._id === _id;
+            });
+            var cartAfterDelete = [].concat(_toConsumableArray(cartArr.slice(0, delIndex)), _toConsumableArray(cartArr.slice(delIndex + 1)));
+            this.props.deleteItem(cartAfterDelete);
         }
     }, {
         key: 'render',
@@ -19188,7 +19195,7 @@ var Cart = function (_Component) {
                                     {
                                         bsStyle: 'danger',
                                         bsSize: 'small',
-                                        onClick: _this2.onDelete.bind(_this2)
+                                        onClick: _this2.onDelete.bind(_this2, item._id)
                                     },
                                     'Delete'
                                 )
@@ -19597,15 +19604,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var startingBooks = [{
     title: 'Sandman',
-    _id: '0',
+    _id: Math.floor(Math.random() * 100000),
     price: 34
 }, {
     title: 'Treasure Island',
-    _id: '1',
+    _id: Math.floor(Math.random() * 100000),
     price: 5.99
 }, {
     title: 'Shipwrecked!',
-    _id: '2',
+    _id: Math.floor(Math.random() * 100000),
     price: 11.23
 }];
 
@@ -19665,6 +19672,7 @@ function cartReducer() {
 
         case 'DELETE_ITEM':
             console.log('in reducer', action.payload);
+            return { cart: [].concat(_toConsumableArray(action.payload)) };
 
         default:
             return state;

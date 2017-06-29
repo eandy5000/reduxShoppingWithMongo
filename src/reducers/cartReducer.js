@@ -5,6 +5,7 @@ export function cartReducer (state = {cart: []}, action) {
 
         case 'DELETE_ITEM':
         console.log('in reducer', action.payload)
+        return {cart: [...action.payload]}
 
         default:
         return state
