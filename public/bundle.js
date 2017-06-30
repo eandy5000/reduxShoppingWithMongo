@@ -19117,6 +19117,21 @@ var Cart = function (_Component) {
             this.props.deleteItem(cartAfterDelete);
         }
     }, {
+        key: 'onInc',
+        value: function onInc(_id, unit) {
+            console.log('wrk', _id, unit);
+            this.props.updateCart(_id, unit);
+        }
+    }, {
+        key: 'onDec',
+        value: function onDec(_id, unit, qty) {
+            console.log('wrk', _id, unit, qty);
+            if (qty + unit <= 0) {
+                this.onDelete(_id);
+            }
+            this.props.updateCart(_id, unit);
+        }
+    }, {
         key: 'render',
         value: function render() {
             if (this.props.cart[0]) {
@@ -19181,12 +19196,20 @@ var Cart = function (_Component) {
                                 { style: { minWidth: '300px' } },
                                 _react2.default.createElement(
                                     _reactBootstrap.Button,
-                                    { bsStyle: 'default', bsSize: 'small' },
+                                    {
+                                        bsStyle: 'default',
+                                        bsSize: 'small',
+                                        onClick: _this2.onDec.bind(_this2, item._id, -1, item.qty)
+                                    },
                                     '-'
                                 ),
                                 _react2.default.createElement(
                                     _reactBootstrap.Button,
-                                    { bsStyle: 'default', bsSize: 'small' },
+                                    {
+                                        bsStyle: 'default',
+                                        bsSize: 'small',
+                                        onClick: _this2.onInc.bind(_this2, item._id, 1)
+                                    },
                                     '+'
                                 ),
                                 _react2.default.createElement(
@@ -19233,7 +19256,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
         addItem: _cartActions.addItem,
-        deleteItem: _cartActions.deleteItem
+        deleteItem: _cartActions.deleteItem,
+        updateCart: _cartActions.updateCart
     }, dispatch);
 }
 

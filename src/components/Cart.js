@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Panel, Col, Row, Well, Button, ButtonGroup, Label} from 'react-bootstrap'
-import {addItem, deleteItem} from '../actions/cartActions'
+import {addItem, deleteItem, updateCart} from '../actions/cartActions'
 import {toDollars} from '../util/helper'
 
 class Cart extends Component {
@@ -13,6 +13,19 @@ class Cart extends Component {
         this.props.deleteItem(cartAfterDelete)
     }
     
+    onInc (_id, unit) {
+        console.log('wrk', _id, unit)
+        this.props.updateCart(_id, unit)
+    }
+
+    onDec (_id, unit, qty) {
+        console.log('wrk',_id, unit, qty)
+        if (qty + unit <= 0) {
+            this.onDelete(_id)
+        }
+        this.props.updateCart(_id, unit)
+    }
+
     render() {
         if (this.props.cart[0]) {
             return this.renderCart()
@@ -42,8 +55,16 @@ class Cart extends Component {
                         </Col>
                         <Col xs={6} sm={4}>
                             <ButtonGroup style={{minWidth: '300px'}}>
-                                <Button bsStyle="default" bsSize="small">-</Button>
-                                <Button bsStyle="default" bsSize="small">+</Button>
+                                <Button 
+                                    bsStyle="default" 
+                                    bsSize="small"
+                                    onClick={this.onDec.bind(this, item._id, -1, item.qty)}
+                                >-</Button>
+                                <Button 
+                                    bsStyle="default" 
+                                    bsSize="small"
+                                    onClick={this.onInc.bind(this, item._id, 1)}
+                                >+</Button>
                                 <span>     </span>
                                 <Button 
                                     bsStyle="danger" 
@@ -76,7 +97,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         addItem,
-        deleteItem
+        deleteItem,
+        updateCart
     }, dispatch)
 }
 
