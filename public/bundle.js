@@ -19803,6 +19803,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.cartReducer = cartReducer;
+exports.totals = totals;
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -19812,11 +19813,15 @@ function cartReducer() {
 
     switch (action.type) {
         case 'ADD_ITEM':
-            return { cart: [].concat(_toConsumableArray(state.cart), [action.payload]) };
+            return { cart: [].concat(_toConsumableArray(state.cart), [action.payload]),
+                total: totals(action.payload)
+            };
 
         case 'DELETE_ITEM':
             console.log('in reducer', action.payload);
-            return { cart: [].concat(_toConsumableArray(action.payload)) };
+            return { cart: [].concat(_toConsumableArray(action.payload)),
+                total: totals(action.payload)
+            };
 
         case 'UPDATE_CART':
             var upArr = [].concat(_toConsumableArray(state.cart));
@@ -19826,12 +19831,28 @@ function cartReducer() {
             var newItem = _extends({}, upArr[upIndex], {
                 qty: upArr[upIndex].qty + action.unit
             });
+            var newArr = [].concat(_toConsumableArray(upArr.slice(0, upIndex)), [newItem], _toConsumableArray(upArr.slice(upIndex + 1)));
 
-            return { cart: [].concat(_toConsumableArray(upArr.slice(0, upIndex)), [newItem], _toConsumableArray(upArr.slice(upIndex + 1))) };
+            return { cart: newArr,
+                total: totals(newArr)
+
+            };
 
         default:
             return state;
     }
+}
+
+// Calculate totals
+
+function totals(payloadArr) {
+    var totalAmt = payloadArr.map(function (cartItem) {
+        return cartItem.price * cartItem.qty;
+    }).reduce(function (a, b) {
+        return a + b;
+    }, 0);
+
+    return { amout: totalAmt };
 }
 
 /***/ }),
