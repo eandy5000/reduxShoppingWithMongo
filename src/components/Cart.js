@@ -1,11 +1,26 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Panel, Col, Row, Well, Button, ButtonGroup, Label} from 'react-bootstrap'
+import {Panel, Col, Row, Well, Button, ButtonGroup, Label, Modal} from 'react-bootstrap'
 import {addItem, deleteItem, updateCart} from '../actions/cartActions'
 import {toDollars} from '../util/helper'
 
 class Cart extends Component {
+    constructor () {
+        super()
+        this.state = {
+            showModal: false
+        }
+    }
+
+    open() {
+        this.setState({showModal: true})
+    }
+
+    close() {
+        this.setState({showModal: false})
+    }
+    
     onDelete(_id) {
         let cartArr = this.props.cart
         const delIndex = cartArr.findIndex((item) => item._id === _id)
@@ -14,14 +29,11 @@ class Cart extends Component {
     }
     
     onInc (_id, unit) {
-        console.log('wrk', _id, unit)
         this.props.updateCart(_id, unit)
     }
 
     onDec (_id, unit, qty) {
-        console.log('wrk',_id, unit, qty)
         if (qty + unit <= 0) {
-            console.log('zero', qty)
             return this.onDelete(_id)
         }
         this.props.updateCart(_id, unit)
@@ -81,6 +93,33 @@ class Cart extends Component {
         return (
             <Panel header="Cart" bsStyle="primary">
                 {list}
+                <Row>
+                    <Col xs={12}>
+                    <h6>Total amount:</h6>
+                    <Button 
+                        bsSize="small" 
+                        bsStyle="success"
+                        onClick={this.open.bind(this)}
+                    >
+                        Proceed to Checkout
+                    </Button>
+                    </Col>
+                </Row>
+                    <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Modal heading</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <h6>Your order is complete!</h6>
+                      <p>You will recieve an email shortly confirming your order.</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Col xs={6}>
+                            <h6>Total: </h6>
+                        </Col>
+                        <Button onClick={this.close.bind(this)}>Close</Button>
+                    </Modal.Footer>
+                    </Modal>
             </Panel>
         )
     }

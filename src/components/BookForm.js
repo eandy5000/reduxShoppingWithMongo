@@ -17,7 +17,6 @@ class BookForm extends Component {
         }
         this.props.addBook(book)
         
-        console.log()
     }
 
     render () {

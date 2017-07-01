@@ -19103,10 +19103,25 @@ var Cart = function (_Component) {
     function Cart() {
         _classCallCheck(this, Cart);
 
-        return _possibleConstructorReturn(this, (Cart.__proto__ || Object.getPrototypeOf(Cart)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Cart.__proto__ || Object.getPrototypeOf(Cart)).call(this));
+
+        _this.state = {
+            showModal: false
+        };
+        return _this;
     }
 
     _createClass(Cart, [{
+        key: 'open',
+        value: function open() {
+            this.setState({ showModal: true });
+        }
+    }, {
+        key: 'close',
+        value: function close() {
+            this.setState({ showModal: false });
+        }
+    }, {
         key: 'onDelete',
         value: function onDelete(_id) {
             var cartArr = this.props.cart;
@@ -19119,15 +19134,12 @@ var Cart = function (_Component) {
     }, {
         key: 'onInc',
         value: function onInc(_id, unit) {
-            console.log('wrk', _id, unit);
             this.props.updateCart(_id, unit);
         }
     }, {
         key: 'onDec',
         value: function onDec(_id, unit, qty) {
-            console.log('wrk', _id, unit, qty);
             if (qty + unit <= 0) {
-                console.log('zero', qty);
                 return this.onDelete(_id);
             }
             this.props.updateCart(_id, unit);
@@ -19235,7 +19247,74 @@ var Cart = function (_Component) {
             return _react2.default.createElement(
                 _reactBootstrap.Panel,
                 { header: 'Cart', bsStyle: 'primary' },
-                list
+                list,
+                _react2.default.createElement(
+                    _reactBootstrap.Row,
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.Col,
+                        { xs: 12 },
+                        _react2.default.createElement(
+                            'h6',
+                            null,
+                            'Total amount:'
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            {
+                                bsSize: 'small',
+                                bsStyle: 'success',
+                                onClick: this.open.bind(this)
+                            },
+                            'Proceed to Checkout'
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Modal,
+                    { show: this.state.showModal, onHide: this.close.bind(this) },
+                    _react2.default.createElement(
+                        _reactBootstrap.Modal.Header,
+                        { closeButton: true },
+                        _react2.default.createElement(
+                            _reactBootstrap.Modal.Title,
+                            null,
+                            'Modal heading'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Modal.Body,
+                        null,
+                        _react2.default.createElement(
+                            'h6',
+                            null,
+                            'Your order is complete!'
+                        ),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            'You will recieve an email shortly confirming your order.'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Modal.Footer,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 6 },
+                            _react2.default.createElement(
+                                'h6',
+                                null,
+                                'Total: '
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            { onClick: this.close.bind(this) },
+                            'Close'
+                        )
+                    )
+                )
             );
         }
     }, {
@@ -19446,8 +19525,6 @@ var BookForm = function (_Component) {
                 _id: (0, _helper.randomId)()
             };
             this.props.addBook(book);
-
-            console.log();
         }
     }, {
         key: 'render',
