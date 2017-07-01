@@ -21,7 +21,8 @@ class Cart extends Component {
     onDec (_id, unit, qty) {
         console.log('wrk',_id, unit, qty)
         if (qty + unit <= 0) {
-            this.onDelete(_id)
+            console.log('zero', qty)
+            return this.onDelete(_id)
         }
         this.props.updateCart(_id, unit)
     }
