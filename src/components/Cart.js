@@ -40,6 +40,7 @@ class Cart extends Component {
     }
 
     render() {
+        console.log(this.props.total)
         if (this.props.cart[0]) {
             return this.renderCart()
         }
@@ -130,7 +131,8 @@ class Cart extends Component {
 
 function mapStateToProps(state) {
     return {
-        cart: state.cart.cart
+        cart: state.cart.cart,
+        total: state.cart.total
     }
 }
 

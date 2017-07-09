@@ -1,17 +1,26 @@
 export function cartReducer (state = {cart: []}, action) {
     switch(action.type) {
         case 'ADD_ITEM':
-        return {cart:[...state.cart, action.payload],
-                total: totals(action.payload)
+        console.log('add', typeof action.payload, Array.isArray(action.payload), action.payload)
+        const itemAdded = [action.payload]
+        const addCart = [
+            ...state.cart,
+            ...itemAdded
+        ]
+        
+        return {cart: addCart,
+                total: totals(addCart)
                 }
 
         case 'DELETE_ITEM':
-        console.log('in reducer', action.payload)
+        const delCart = [...action.payload]
+        console.log('del', typeof delCart)
         return {cart: [...action.payload],
-                total: totals(action.payload)
+                total: totals(delCart)
                 }
 
         case 'UPDATE_CART':
+        console.log('up', typeof action.payload)
         const upArr = [...state.cart]
         const upIndex = upArr.findIndex(updatedItem => updatedItem._id === action._id)
         const newItem = {
@@ -24,9 +33,9 @@ export function cartReducer (state = {cart: []}, action) {
            ...upArr.slice(upIndex + 1)
         ]
        
-       return {cart: newArr,
-       total: totals(newArr)
-    
+       return {
+           cart: newArr,
+           total: totals(newArr)
     }
 
         default:
@@ -37,11 +46,12 @@ export function cartReducer (state = {cart: []}, action) {
 // Calculate totals
 
 export function totals (payloadArr) {
-    const totalAmt = payloadArr.map(cartItem => {
-        return cartItem.price * cartItem.qty
-    }).reduce((a, b) => {
+
+    const calcTot = payloadArr.map(item => {
+        return item.price * item.qty
+    }).reduce((a,b) => {
         return a + b
     }, 0)
 
-    return {amout: totalAmt}
+    return calcTot
 }
