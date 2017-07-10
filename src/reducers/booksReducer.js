@@ -29,7 +29,7 @@ export function booksReducer (state = {books: []}, action) {
         case 'DELETE_BOOK':
         const delArr = [...state.books]
         const delInd = delArr
-                            .findIndex(book => book._id === action.payload._id.toString())
+                            .findIndex(book => book._id.toString() === action.payload)
         return {books: [
             ...delArr.slice(0, delInd),
             ...delArr.slice(delInd + 1)

@@ -1,7 +1,6 @@
 export function cartReducer (state = {cart: []}, action) {
     switch(action.type) {
         case 'ADD_ITEM':
-        console.log('add', typeof action.payload, Array.isArray(action.payload), action.payload)
         const itemAdded = [action.payload]
         const addCart = [
             ...state.cart,
@@ -14,13 +13,11 @@ export function cartReducer (state = {cart: []}, action) {
 
         case 'DELETE_ITEM':
         const delCart = [...action.payload]
-        console.log('del', typeof delCart)
         return {cart: [...action.payload],
                 total: totals(delCart)
                 }
 
         case 'UPDATE_CART':
-        console.log('up', typeof action.payload)
         const upArr = [...state.cart]
         const upIndex = upArr.findIndex(updatedItem => updatedItem._id === action._id)
         const newItem = {

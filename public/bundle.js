@@ -10723,7 +10723,6 @@ var Cart = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            console.log(this.props.total);
             if (this.props.cart[0]) {
                 return this.renderCart();
             }
@@ -10834,7 +10833,8 @@ var Cart = function (_Component) {
                         _react2.default.createElement(
                             'h6',
                             null,
-                            'Total amount:'
+                            'Total amount: ',
+                            (0, _helper.toDollars)(this.props.total)
                         ),
                         _react2.default.createElement(
                             _reactBootstrap.Button,
@@ -10882,7 +10882,8 @@ var Cart = function (_Component) {
                             _react2.default.createElement(
                                 'h6',
                                 null,
-                                'Total: '
+                                'Total: ',
+                                (0, _helper.toDollars)(this.props.total)
                             )
                         ),
                         _react2.default.createElement(
@@ -19502,6 +19503,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -19551,8 +19554,25 @@ var BookForm = function (_Component) {
             this.props.addBook(book);
         }
     }, {
+        key: 'onDelete',
+        value: function onDelete() {
+            var bookId = (0, _reactDom.findDOMNode)(this.refs.delete).value;
+            console.log(bookId, typeof bookId === 'undefined' ? 'undefined' : _typeof(bookId));
+            if (bookId !== "select") {
+                this.props.deleteBook(bookId);
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var booksList = this.props.books.map(function (book) {
+                return _react2.default.createElement(
+                    'option',
+                    { key: book.title, value: book._id },
+                    book.title
+                );
+            });
+
             return _react2.default.createElement(
                 _reactBootstrap.Well,
                 null,
@@ -19595,6 +19615,37 @@ var BookForm = function (_Component) {
                         },
                         'Save'
                     )
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Panel,
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.FormGroup,
+                        { controlId: 'formControlsSelect' },
+                        _react2.default.createElement(
+                            _reactBootstrap.ControlLabel,
+                            null,
+                            'Delete a Book'
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.FormControl,
+                            { ref: 'delete', componentClass: 'select', placeholder: 'select' },
+                            _react2.default.createElement(
+                                'option',
+                                { value: 'select' },
+                                'Select'
+                            ),
+                            booksList
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Button,
+                        {
+                            bsStyle: 'danger',
+                            onClick: this.onDelete.bind(this)
+                        },
+                        'Delete'
+                    )
                 )
             );
         }
@@ -19603,13 +19654,20 @@ var BookForm = function (_Component) {
     return BookForm;
 }(_react.Component);
 
+function mapStateToProps(state) {
+    return {
+        books: state.books.books
+    };
+}
+
 function mapDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
-        addBook: _booksActions.addBook
+        addBook: _booksActions.addBook,
+        deleteBook: _booksActions.deleteBook
     }, dispatch);
 }
 
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(BookForm);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookForm);
 
 /***/ }),
 /* 225 */
@@ -19795,7 +19853,7 @@ function booksReducer() {
         case 'DELETE_BOOK':
             var delArr = [].concat(_toConsumableArray(state.books));
             var delInd = delArr.findIndex(function (book) {
-                return book._id === action.payload._id.toString();
+                return book._id.toString() === action.payload;
             });
             return { books: [].concat(_toConsumableArray(delArr.slice(0, delInd)), _toConsumableArray(delArr.slice(delInd + 1))) };
 
@@ -19826,8 +19884,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 exports.cartReducer = cartReducer;
 exports.totals = totals;
 
@@ -19839,7 +19895,6 @@ function cartReducer() {
 
     switch (action.type) {
         case 'ADD_ITEM':
-            console.log('add', _typeof(action.payload), Array.isArray(action.payload), action.payload);
             var itemAdded = [action.payload];
             var addCart = [].concat(_toConsumableArray(state.cart), itemAdded);
 
@@ -19849,13 +19904,11 @@ function cartReducer() {
 
         case 'DELETE_ITEM':
             var delCart = [].concat(_toConsumableArray(action.payload));
-            console.log('del', typeof delCart === 'undefined' ? 'undefined' : _typeof(delCart));
             return { cart: [].concat(_toConsumableArray(action.payload)),
                 total: totals(delCart)
             };
 
         case 'UPDATE_CART':
-            console.log('up', _typeof(action.payload));
             var upArr = [].concat(_toConsumableArray(state.cart));
             var upIndex = upArr.findIndex(function (updatedItem) {
                 return updatedItem._id === action._id;

@@ -40,7 +40,6 @@ class Cart extends Component {
     }
 
     render() {
-        console.log(this.props.total)
         if (this.props.cart[0]) {
             return this.renderCart()
         }
@@ -96,7 +95,7 @@ class Cart extends Component {
                 {list}
                 <Row>
                     <Col xs={12}>
-                    <h6>Total amount:</h6>
+                    <h6>Total amount: {toDollars(this.props.total)}</h6>
                     <Button 
                         bsSize="small" 
                         bsStyle="success"
@@ -116,7 +115,7 @@ class Cart extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Col xs={6}>
-                            <h6>Total: </h6>
+                            <h6>Total: {toDollars(this.props.total)}</h6>
                         </Col>
                         <Button onClick={this.close.bind(this)}>Close</Button>
                     </Modal.Footer>

@@ -6,7 +6,7 @@ import {Well, Panel, FormControl, FormGroup, ControlLabel, Button} from 'react-b
 import {randomId} from '../util/helper'
 
 // actions
-import {addBook} from '../actions/booksActions'
+import {addBook, deleteBook} from '../actions/booksActions'
 
 class BookForm extends Component {
     handleSubmit () {
@@ -16,10 +16,23 @@ class BookForm extends Component {
             _id: randomId()
         }
         this.props.addBook(book)
-        
+    }
+
+    onDelete () {
+        let bookId = findDOMNode(this.refs.delete).value
+        console.log(bookId, typeof bookId)
+        if (bookId !== "select") {
+            this.props.deleteBook(bookId)
+        }     
     }
 
     render () {
+        const booksList = this.props.books.map(book => {
+            return (
+                <option key={book.title} value={book._id}>{book.title}</option>
+            )
+        })
+
         return (
             <Well>
                 <Panel>
@@ -44,15 +57,35 @@ class BookForm extends Component {
                         onClick={this.handleSubmit.bind(this)}
                     >Save</Button>
                 </Panel>
+                <Panel>
+                    <FormGroup controlId="formControlsSelect">
+                    <ControlLabel>Delete a Book</ControlLabel>
+                    <FormControl ref="delete" componentClass="select" placeholder="select">
+                        <option value="select">Select</option>
+                        {booksList}
+                    </FormControl>
+                    </FormGroup>
+                    <Button 
+                        bsStyle="danger"
+                        onClick={this.onDelete.bind(this)}
+                    >Delete</Button>
+                </Panel>
             </Well>
         )
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        books: state.books.books
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        addBook
+        addBook,
+        deleteBook
     }, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(BookForm)
+export default connect(mapStateToProps, mapDispatchToProps)(BookForm)
