@@ -11,7 +11,8 @@ import {getBooks, addBook, deleteBook, updateTitle} from './actions/booksActions
 // components
 const app = document.querySelector('#app')
 import BookList from './components/BookList'
-import Cart from './components/Cart'
+import Menu from './components/menu'
+import Footer from './components/footer'
 
 const store = createStore(reducer)
 
@@ -22,7 +23,9 @@ const store = createStore(reducer)
 ReactDom.render(
     <Provider store={store}>
        <div>
+            <Menu />
             <BookList />
+            <Footer />
        </div>
     </Provider>,
     app
