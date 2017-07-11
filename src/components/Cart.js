@@ -107,7 +107,7 @@ class Cart extends Component {
                 </Row>
                     <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Shopping Cart</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                       <h6>Your order is complete!</h6>

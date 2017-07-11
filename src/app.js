@@ -3,6 +3,7 @@ import ReactDom from 'react-dom'
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 import reducer from './reducers'
+import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 
 // actions
 import {inc, dec, zero} from './actions/countActions'
@@ -11,8 +12,9 @@ import {getBooks, addBook, deleteBook, updateTitle} from './actions/booksActions
 // components
 const app = document.querySelector('#app')
 import BookList from './components/BookList'
-import Menu from './components/menu'
-import Footer from './components/footer'
+import Cart from './components/Cart'
+import BookForm from './components/BookForm'
+import Main from './components/Main'
 
 const store = createStore(reducer)
 
@@ -20,14 +22,22 @@ const store = createStore(reducer)
 //     console.log('Store: ', store.getState())
 // })
 
-ReactDom.render(
+const Routes = (
     <Provider store={store}>
        <div>
-            <Menu />
-            <BookList />
-            <Footer />
+        <Router history={browserHistory}>
+            <Route path="/" component={Main}>
+                <IndexRoute component={BookList} />
+                <Route path="/cart" component={Cart} />
+                <Route path="/admin" component={BookForm} />
+            </Route>
+        </Router>
        </div>
-    </Provider>,
+    </Provider>
+)
+
+ReactDom.render(
+    Routes,
     app
 )
 
