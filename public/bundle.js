@@ -19921,13 +19921,15 @@ function cartReducer() {
             var addCart = [].concat(_toConsumableArray(state.cart), itemAdded);
 
             return { cart: addCart,
-                total: totals(addCart)
+                total: totals(addCart),
+                totalQty: itemsInCart(addCart)
             };
 
         case 'DELETE_ITEM':
             var delCart = [].concat(_toConsumableArray(action.payload));
             return { cart: [].concat(_toConsumableArray(action.payload)),
-                total: totals(delCart)
+                total: totals(delCart),
+                totalQty: itemsInCart(delCart)
             };
 
         case 'UPDATE_CART':
@@ -19942,7 +19944,8 @@ function cartReducer() {
 
             return {
                 cart: newArr,
-                total: totals(newArr)
+                total: totals(newArr),
+                totalQty: itemsInCart(newArr)
             };
 
         default:
@@ -19961,6 +19964,16 @@ function totals(payloadArr) {
     }, 0);
 
     return calcTot;
+}
+
+function itemsInCart(payloadArr) {
+    var calcNumItems = payloadArr.map(function (item) {
+        return item.qty;
+    }).reduce(function (a, b) {
+        return a + b;
+    }, 0);
+
+    return calcNumItems;
 }
 
 /***/ }),
@@ -44205,12 +44218,12 @@ var Menu = function (_Component) {
                         _react2.default.createElement(
                             _reactBootstrap.NavItem,
                             { eventKey: 2, href: '/cart' },
-                            'Your Cart  ',
-                            _react2.default.createElement(
+                            'Your Cart',
+                            this.props.cartItemsNumber > 0 ? _react2.default.createElement(
                                 _reactBootstrap.Badge,
                                 { className: 'badge' },
-                                '1'
-                            )
+                                this.props.cartItemsNumber
+                            ) : ''
                         )
                     )
                 )
@@ -48942,6 +48955,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(52);
+
 var _footer = __webpack_require__(491);
 
 var _footer2 = _interopRequireDefault(_footer);
@@ -48973,7 +48988,7 @@ var Main = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_menu2.default, null),
+                _react2.default.createElement(_menu2.default, { cartItemsNumber: this.props.totalQty }),
                 this.props.children,
                 _react2.default.createElement(_footer2.default, null)
             );
@@ -48983,7 +48998,13 @@ var Main = function (_Component) {
     return Main;
 }(_react.Component);
 
-exports.default = Main;
+function mapStateToProps(state) {
+    return {
+        totalQty: state.cart.totalQty
+    };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Main);
 
 /***/ })
 /******/ ]);

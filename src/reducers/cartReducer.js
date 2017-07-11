@@ -8,13 +8,15 @@ export function cartReducer (state = {cart: []}, action) {
         ]
         
         return {cart: addCart,
-                total: totals(addCart)
+                total: totals(addCart),
+                totalQty: itemsInCart(addCart)
                 }
 
         case 'DELETE_ITEM':
         const delCart = [...action.payload]
         return {cart: [...action.payload],
-                total: totals(delCart)
+                total: totals(delCart),
+                totalQty: itemsInCart(delCart)
                 }
 
         case 'UPDATE_CART':
@@ -32,7 +34,8 @@ export function cartReducer (state = {cart: []}, action) {
        
        return {
            cart: newArr,
-           total: totals(newArr)
+           total: totals(newArr),
+           totalQty: itemsInCart(newArr)
     }
 
         default:
@@ -51,4 +54,14 @@ export function totals (payloadArr) {
     }, 0)
 
     return calcTot
+}
+
+function itemsInCart (payloadArr) {
+    const calcNumItems = payloadArr.map(item => {
+        return item.qty
+    }).reduce((a, b) => {
+        return a + b
+    }, 0)
+
+    return calcNumItems
 }
