@@ -4,8 +4,18 @@ export function booksReducer(state={books:[]}, action) {
         case 'ADD_BOOK':
         return {books:[
             ...state.books,
-            action.payload
+            ...action.payload
         ]}
+
+        case 'GET_BOOKS':
+        return {books: [
+            ...state.books,
+            ...action.payload
+        ]}
+
+        default:
+        return state
+
     }
-    return state
+
 }

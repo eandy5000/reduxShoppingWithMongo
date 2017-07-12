@@ -97,7 +97,7 @@ var store = (0, _redux.createStore)(_reducers2.default, middleWare);
 
 store.subscribe(function () {
     console.log('store: ' + store.getState().count.count);
-    console.log('books: ' + store.getState().books.books.length);
+    console.dir(store.getState().books.books);
 });
 
 store.dispatch((0, _countActions.dec)());
@@ -107,9 +107,18 @@ store.dispatch((0, _countActions.inc)());
 store.dispatch((0, _countActions.dec)());
 store.dispatch((0, _countActions.inc)());
 
+function bar() {
+    return _axios2.default.get('/books').then(function (res) {
+        store.dispatch({ type: 'GET_BOOKS', payload: res.data });
+    }).catch(function (err) {
+        return console.log(err);
+    });
+}
+bar();
+
 function foo() {
-    return _axios2.default.post('/books', { title: 'test', price: 1.99 }).then(function (res) {
-        store.dispatch({ type: 'ADD_BOOK', payload: res.data });
+    return _axios2.default.post('/books', { title: 'Think I fixed it', price: 1.99 }).then(function (res) {
+        store.dispatch({ type: 'ADD_BOOK', payload: [res.data] });
     }).catch(function (err) {
         return console.log(err);
     });
@@ -1454,9 +1463,15 @@ function booksReducer() {
 
     switch (action.type) {
         case 'ADD_BOOK':
-            return { books: [].concat(_toConsumableArray(state.books), [action.payload]) };
+            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+
+        case 'GET_BOOKS':
+            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+
+        default:
+            return state;
+
     }
-    return state;
 }
 
 /***/ }),
