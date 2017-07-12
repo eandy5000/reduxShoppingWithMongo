@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import {createStore} from 'redux'
+import thunk from 'redux-thunk'
+import {createStore, applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
 import reducer from './reducers'
 import {Router, Route, IndexRoute, browserHistory} from 'react-router'
@@ -16,7 +17,8 @@ import Cart from './components/Cart'
 import BookForm from './components/BookForm'
 import Main from './components/Main'
 
-const store = createStore(reducer)
+const middleWare = applyMiddleware(thunk)
+const store = createStore(reducer, middleWare)
 
 // store.subscribe(() => {
 //     console.log('Store: ', store.getState())

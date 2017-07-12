@@ -1,3 +1,4 @@
+import Axios from 'axios'
 // books actions
 
 export function getBooks () {
@@ -7,10 +8,19 @@ export function getBooks () {
 }
 
 export function addBook (payload) {
-    return {
-        type: 'ADD_BOOK',
-        payload
+    return function(dispatch) {
+        Axios.post('/books', payload)
+             .then(function(response){
+                 dispatch({type: 'ADD_BOOK', payload: response.data})
+             })
+             .catch(function(err){
+                dispatch({type: 'ADD_REJECTED', payload: 'Error adding Book'})
+             })
     }
+    // return {
+    //     type: 'ADD_BOOK',
+    //     payload
+    // }
 }
 
 export function deleteBook (payload) {
