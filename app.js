@@ -10,24 +10,66 @@ var users = require('./routes/users');
 
 var app = express();
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', index);
-// app.use('/users', users);
+// API's
+var mongoose = require('mongoose')
+//connection
+mongoose.connect('mongodb://localhost:27017/bookshop', { useMongoClient: true })
+
+// importing our model
+var Books = require('./models/books.js')
+
+// post a book
+
+app.post('/books', function (req, res) {
+  // I thing the request will be an array
+  var book = req.body;
+
+  Books.create(book, function(err, books) {
+    if (err) {
+      throw err;
+    }
+    res.json(books)
+  })
+
+});
+
+// get all books
+
+app.get('/books', function(req, res) {
+  Books.find(function(err, books) {
+    if (err) {
+      throw err;
+    }
+    res.json(books)
+  })
+
+});
+
+// delete a book
+
+app.delete('/books/:_id', function(req, res) {
+  var query = {_id: req.params._id};
+
+  Books.remove(query, function(err, book) {
+    if (err) {
+      throw err;
+    }
+    res.send(book)
+  });
+
+}); 
+
+// END API
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
-})
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
