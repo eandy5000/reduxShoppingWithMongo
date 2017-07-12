@@ -1,45 +1,27 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-import thunk from 'redux-thunk'
 import {createStore, applyMiddleware} from 'redux'
-import {Provider} from 'react-redux'
-import reducer from './reducers'
-import {Router, Route, IndexRoute, browserHistory} from 'react-router'
+import thunk from 'redux-thunk'
 
-// actions
-import {inc, dec, zero} from './actions/countActions'
-import {getBooks, addBook, deleteBook, updateTitle} from './actions/booksActions'
+const reducer = function(state=0, action) {
+    switch(action.type) {
+        case 'INC':
+        return state = state + 1
 
-// components
-const app = document.querySelector('#app')
-import BookList from './components/BookList'
-import Cart from './components/Cart'
-import BookForm from './components/BookForm'
-import Main from './components/Main'
+        case 'DEC':
+        return state = state - 1
+
+    }
+    return state
+}
 
 const middleWare = applyMiddleware(thunk)
+
 const store = createStore(reducer, middleWare)
 
-// store.subscribe(() => {
-//     console.log('Store: ', store.getState())
-// })
+store.subscribe(() => console.log('state: '+ store.getState()))
 
-const Routes = (
-    <Provider store={store}>
-       <div>
-        <Router history={browserHistory}>
-            <Route path="/" component={Main}>
-                <IndexRoute component={BookList} />
-                <Route path="/cart" component={Cart} />
-                <Route path="/admin" component={BookForm} />
-            </Route>
-        </Router>
-       </div>
-    </Provider>
-)
-
-ReactDom.render(
-    Routes,
-    app
-)
-
+store.dispatch({type: 'TEST'})
+store.dispatch({type: 'INC'})
+store.dispatch({type: 'INC'})
+store.dispatch({type: 'INC'})
+store.dispatch({type: 'DEC'})
+store.dispatch({type: 'INC'})
