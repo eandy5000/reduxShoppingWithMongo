@@ -1,27 +1,32 @@
 import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
+import Axios from 'axios'
 
-const reducer = function(state=0, action) {
-    switch(action.type) {
-        case 'INC':
-        return state = state + 1
+import {inc, dec} from './actions/countActions'
 
-        case 'DEC':
-        return state = state - 1
-
-    }
-    return state
-}
+import reducer from './reducers'
 
 const middleWare = applyMiddleware(thunk)
 
 const store = createStore(reducer, middleWare)
 
-store.subscribe(() => console.log('state: '+ store.getState()))
+store.subscribe(() => {
+    console.log('store: '+store.getState().count.count)
+    console.log('books: '+store.getState().books.books.length)    
+})
 
-store.dispatch({type: 'TEST'})
-store.dispatch({type: 'INC'})
-store.dispatch({type: 'INC'})
-store.dispatch({type: 'INC'})
-store.dispatch({type: 'DEC'})
-store.dispatch({type: 'INC'})
+store.dispatch(dec())
+store.dispatch(inc())
+store.dispatch(inc())
+store.dispatch(inc())
+store.dispatch(dec())
+store.dispatch(inc())
+
+function foo() {
+    return Axios.post('/books', {title: 'test', price: 1.99})
+                .then(res => {
+                    store.dispatch({type:'ADD_BOOK', payload: res.data})
+                })
+                .catch(err => console.log(err))
+}
+foo()

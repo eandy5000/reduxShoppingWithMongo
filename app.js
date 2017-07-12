@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // API's
 var mongoose = require('mongoose')
 //connection
-mongoose.connect('mongodb://localhost:27017/bookshop', { useMongoClient: true })
+mongoose.connect('mongodb://localhost:27017/booker', { useMongoClient: true })
 
 // importing our model
 var Books = require('./models/books.js')
