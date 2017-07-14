@@ -30,6 +30,25 @@ export function booksReducer(state={books:[]}, action) {
             ]
         }
 
+        case 'UPDATE_BOOK':
+        const upArr = [...state.books]
+        const upIndex = upArr.findIndex(book => {
+            return book._id === action.payload._id
+        })
+        const updatedParts = {
+            title: action.payload.title,
+            price: action.payload.price
+        }
+
+        const upItem = Object.assign({}, upArr[upIndex], updatedParts)
+
+        console.log('up item ', upItem)
+        return {books: [
+            ...upArr.slice(0, upIndex),
+            upItem,
+            ...upArr.slice(upIndex + 1)
+        ]}
+
         default:
         return state
 

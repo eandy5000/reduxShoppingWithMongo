@@ -46,11 +46,25 @@ setTimeout(() =>{
 
 
 
-function foo() {
-    return Axios.post('/books', {title: 'Think I fixed it', price: 1.99})
-                .then(res => {
-                    store.dispatch({type:'ADD_BOOK', payload: [res.data]})
-                })
-                .catch(err => console.log(err))
+// function foo() {
+//     return Axios.post('/books', {title: 'Think I fixed it', price: 1.99})
+//                 .then(res => {
+//                     store.dispatch({type:'ADD_BOOK', payload: [res.data]})
+//                 })
+//                 .catch(err => console.log(err))
+// }
+// foo()
+
+function upOne(_id, upObj) {
+    Axios.put(`/books/${_id}`, upObj)
+         .then(response => {
+             store.dispatch({type: 'UPDATE_BOOK', payload: {
+                 _id: response.data._id,
+                 title: response.data.title,    
+                 price: response.data.price
+             }})
+         })
+         .catch(err => console.log('update error ', err))
 }
-foo()
+
+upOne('596822cb2635543f4d4425e3', {title: 'changed yetis again', price: 19.99})

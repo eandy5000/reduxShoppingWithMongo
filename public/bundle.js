@@ -126,16 +126,30 @@ function delOne(_id) {
 
 setTimeout(function () {
     console.dir(store.getState());
-}, 3000);
+}, 3000
 
-function foo() {
-    return _axios2.default.post('/books', { title: 'Think I fixed it', price: 1.99 }).then(function (res) {
-        store.dispatch({ type: 'ADD_BOOK', payload: [res.data] });
+// function foo() {
+//     return Axios.post('/books', {title: 'Think I fixed it', price: 1.99})
+//                 .then(res => {
+//                     store.dispatch({type:'ADD_BOOK', payload: [res.data]})
+//                 })
+//                 .catch(err => console.log(err))
+// }
+// foo()
+
+);function upOne(_id, upObj) {
+    _axios2.default.put('/books/' + _id, upObj).then(function (response) {
+        store.dispatch({ type: 'UPDATE_BOOK', payload: {
+                _id: response.data._id,
+                title: response.data.title,
+                price: response.data.price
+            } });
     }).catch(function (err) {
-        return console.log(err);
+        return console.log('update error ', err);
     });
 }
-foo();
+
+upOne('596822cb2635543f4d4425e3', { title: 'changed yetis again', price: 19.99 });
 
 /***/ }),
 /* 1 */
@@ -1493,6 +1507,21 @@ function booksReducer() {
             return {
                 books: [].concat(_toConsumableArray(delArr.slice(0, delIndex)), _toConsumableArray(delArr.slice(delIndex + 1)))
             };
+
+        case 'UPDATE_BOOK':
+            var upArr = [].concat(_toConsumableArray(state.books));
+            var upIndex = upArr.findIndex(function (book) {
+                return book._id === action.payload._id;
+            });
+            var updatedParts = {
+                title: action.payload.title,
+                price: action.payload.price
+            };
+
+            var upItem = Object.assign({}, upArr[upIndex], updatedParts);
+
+            console.log('up item ', upItem);
+            return { books: [].concat(_toConsumableArray(upArr.slice(0, upIndex)), [upItem], _toConsumableArray(upArr.slice(upIndex + 1))) };
 
         default:
             return state;
