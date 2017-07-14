@@ -13,3 +13,13 @@ export function getBooks(store) {
             return store.dispatch({type: 'GET_BOOKS_ERROR'})
         })
 }
+
+export function addBook(store, book) {
+    axios.post('/books', book)
+        .then(res => {
+            store.dispatch({type: 'ADD_BOOK', payload: [res.data]})
+        })
+        .catch(err => {
+            store.dispatch({type: 'ADD_BOOK_ERROR'})
+        })
+}

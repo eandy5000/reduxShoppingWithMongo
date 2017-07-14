@@ -79,6 +79,10 @@ var _reduxThunk = __webpack_require__(8);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
+var _axios = __webpack_require__(36);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 var _reducers = __webpack_require__(25);
 
 var _reducers2 = _interopRequireDefault(_reducers);
@@ -100,9 +104,10 @@ store.subscribe(function () {
     console.log('state books: ', store.getState().books.books);
 });
 
-(0, _booksActions.getBooks)(store);
+(0, _booksActions.getBooks)(store
+// addBook(store, {title: 'action added title', price: 11})
 
-setTimeout(function () {
+);setTimeout(function () {
     console.log(store.getState());
 }, 3000);
 
@@ -1458,6 +1463,19 @@ function booksReducer() {
             return {
                 books: [].concat(_toConsumableArray(state.books)),
                 error: 'error getting books'
+            };
+
+        case 'ADD_BOOK':
+            console.log('red pay ', action.payload);
+            return {
+                books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)),
+                error: ''
+            };
+
+        case 'ADD_BOOK_ERROR':
+            return {
+                books: [].concat(_toConsumableArray(state.books)),
+                error: 'error adding book'
             };
 
         default:
@@ -3062,6 +3080,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.getBooks = getBooks;
+exports.addBook = addBook;
 
 var _axios = __webpack_require__(36);
 
@@ -3079,6 +3098,14 @@ function getBooks(store) {
         });
     }).catch(function (err) {
         return store.dispatch({ type: 'GET_BOOKS_ERROR' });
+    });
+}
+
+function addBook(store, book) {
+    _axios2.default.post('/books', book).then(function (res) {
+        store.dispatch({ type: 'ADD_BOOK', payload: [res.data] });
+    }).catch(function (err) {
+        store.dispatch({ type: 'ADD_BOOK_ERROR' });
     });
 }
 
