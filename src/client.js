@@ -17,19 +17,32 @@ store.subscribe(() => {
 
 store.dispatch(dec())
 store.dispatch(inc())
-store.dispatch(inc())
-store.dispatch(inc())
-store.dispatch(dec())
-store.dispatch(inc())
 
-function bar() {
+function getEm() {
     return Axios.get('/books')
                 .then(res => {
                     store.dispatch({type: 'GET_BOOKS', payload: res.data})
                 })
                 .catch(err => console.log(err))
 }
-bar()
+getEm()
+
+function delOne(_id) {
+    Axios.delete(('/books/' + _id))
+         .then(response => {
+             // payload needs id and res
+             store.dispatch({type: 'DELETE_BOOK', payload:{_id}})
+             console.log(response)
+         })
+         .catch(err => console.log('delOne Error',err))
+}
+
+// delOne('5966b0109302cd2711bbb245')
+
+setTimeout(() =>{
+    console.dir(store.getState())
+}, 3000)
+
 
 
 

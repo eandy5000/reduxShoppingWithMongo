@@ -102,19 +102,31 @@ store.subscribe(function () {
 
 store.dispatch((0, _countActions.dec)());
 store.dispatch((0, _countActions.inc)());
-store.dispatch((0, _countActions.inc)());
-store.dispatch((0, _countActions.inc)());
-store.dispatch((0, _countActions.dec)());
-store.dispatch((0, _countActions.inc)());
 
-function bar() {
+function getEm() {
     return _axios2.default.get('/books').then(function (res) {
         store.dispatch({ type: 'GET_BOOKS', payload: res.data });
     }).catch(function (err) {
         return console.log(err);
     });
 }
-bar();
+getEm();
+
+function delOne(_id) {
+    _axios2.default.delete('/books/' + _id).then(function (response) {
+        // payload needs id and res
+        store.dispatch({ type: 'DELETE_BOOK', payload: { _id: _id } });
+        console.log(response);
+    }).catch(function (err) {
+        return console.log('delOne Error', err);
+    });
+}
+
+// delOne('5966b0109302cd2711bbb245')
+
+setTimeout(function () {
+    console.dir(store.getState());
+}, 3000);
 
 function foo() {
     return _axios2.default.post('/books', { title: 'Think I fixed it', price: 1.99 }).then(function (res) {
@@ -1467,6 +1479,20 @@ function booksReducer() {
 
         case 'GET_BOOKS':
             return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+
+        case 'DELETE_BOOK':
+            // action.payload._id is _id
+            var delArr = [].concat(_toConsumableArray(state.books));
+            var delIndex = delArr.findIndex(function (book) {
+                return book._id === action.payload._id;
+            });
+
+            if (delIndex === -1) {
+                return { books: delArr };
+            }
+            return {
+                books: [].concat(_toConsumableArray(delArr.slice(0, delIndex)), _toConsumableArray(delArr.slice(delIndex + 1)))
+            };
 
         default:
             return state;
