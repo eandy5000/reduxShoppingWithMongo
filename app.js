@@ -70,22 +70,25 @@ app.delete('/books/:_id', function(req, res) {
 app.put('/books/:_id', function(req, res){
   // client is sending the updated object
   var query = req.params._id
+  console.log('quer ', query)
   var book = req.body
   var update = {
     '$set': {
     title: book.title,
-    images: book.images,
     price: book.price
     }
   }
+  
 
   // options returns updated object
   var options = {new: true}
 
   Books.findOneAndUpdate(query, update, options, function(err, upbook){
     if(err) {
+      console.log('exp err', err)
       throw err;
     }
+    console.log('up book id', upbook._id)
     res.json(upbook)
   });
 
