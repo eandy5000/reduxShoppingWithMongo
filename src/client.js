@@ -1,29 +1,19 @@
-import {createStore, applyMiddleware} from 'redux'
-import thunk from 'redux-thunk'
-import axios from 'axios'
+import {createStore} from 'redux'
 
-const middleware = applyMiddleware(thunk)
-import reducer from './reducers'
-const store = createStore(reducer, middleware)
+const reducer = function (state={count: 0}, action) {
+    switch(action.type) {
+        default:
+        return {count: state.count}
+    }
+}
 
-// actions
-import {inc, dec, reset} from './actions/countActions'
-import {getBooks, addBook, deleteBook, updateBook} from './actions/booksActions'
 
-store.subscribe(() => {
-    console.log('state books: ',store.getState().books.books)
+const store = createStore(reducer)
+
+store.subscribe(function() {
+    console.log(store.getState())
 })
 
+store.dispatch({type: 'test'})
 
-
-// addBook(store, {title: 'uno', price:3})
-getBooks(store)
-
-
-
-updateBook(store, '596bfb0b8497598921edd5a1', {title: 'ocho', price: 3})
-
-
-setTimeout(() => {
-    console.log(store.getState())
-}, 4000)
+import './reduxTest.js'
