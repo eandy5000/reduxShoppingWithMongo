@@ -73,27 +73,13 @@
 "use strict";
 
 
-var _redux = __webpack_require__(8);
+var _store = __webpack_require__(25);
 
-__webpack_require__(24);
+var _store2 = _interopRequireDefault(_store);
 
-var reducer = function reducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { count: 0 };
-    var action = arguments[1];
+__webpack_require__(27);
 
-    switch (action.type) {
-        default:
-            return { count: state.count };
-    }
-};
-
-var store = (0, _redux.createStore)(reducer);
-
-store.subscribe(function () {
-    console.log(store.getState());
-});
-
-store.dispatch({ type: 'test' });
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 /* 1 */
@@ -1336,11 +1322,66 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 24 */
+/* 24 */,
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _redux = __webpack_require__(8);
+
+var _reducers = __webpack_require__(26);
+
+var _reducers2 = _interopRequireDefault(_reducers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var store = (0, _redux.createStore)(_reducers2.default);
+
+exports.default = store;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+// imp
+var reducer = function reducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { count: 0 };
+
+    return state;
+};
+
+exports.default = reducer;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _store = __webpack_require__(25);
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_store2.default.subscribe(function () {
+    console.log('current state ', _store2.default.getState());
+});
+
+_store2.default.dispatch({ type: 'test' });
 
 /***/ })
 /******/ ]);

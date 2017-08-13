@@ -1,10 +1,6 @@
-import {combineReducers} from 'redux'
+// imp
+const reducer = function (state = {count: 0}) {
+    return state
+}
 
-// reducers
-import {countReducer} from './countReducer'
-import {booksReducer} from './booksReducer'
-
-export default combineReducers({
-    count: countReducer,
-    books: booksReducer
-})
+export default reducer
