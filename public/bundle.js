@@ -11392,9 +11392,13 @@ _store2.default.subscribe(function () {
 });
 
 _store2.default.dispatch({
+    type: 'FETCH'
+});
+
+_store2.default.dispatch({
     type: 'POST',
     payload: {
-        id: '1',
+        id: '4',
         name: 'test',
         price: 11
     }
@@ -11577,7 +11581,24 @@ function booksReducer() {
 
     switch (action.type) {
 
-        case 'POST':
+        //action. payload takes an array
+        case 'FETCH':
+            return { books: [{
+                    id: '1',
+                    name: 'test',
+                    price: 11
+                }, {
+                    id: '2',
+                    name: 'test',
+                    price: 11
+                }, {
+                    id: '3',
+                    name: 'test',
+                    price: 11
+                }]
+
+                //takes a single book object as action.payload
+            };case 'POST':
             return { books: [].concat(_toConsumableArray(state.books), [action.payload]) };
 
         default:

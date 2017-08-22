@@ -5,9 +5,13 @@ store.subscribe(function() {
 })
 
 store.dispatch({
+    type: 'FETCH'
+})
+
+store.dispatch({
     type: 'POST',
-    payload: {
-        id: '1',
+    payload:             {
+        id: '4',
         name: 'test',
         price: 11
     }
