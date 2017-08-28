@@ -1,7 +1,7 @@
 import store from '../store'
 
 store.subscribe(function() {
-    console.log('current state ', store.getState())
+    console.log('current state ', store.getState().books)
 })
 
 store.dispatch({
@@ -14,5 +14,18 @@ store.dispatch({
         id: '4',
         name: 'test',
         price: 11
+    }
+})
+
+store.dispatch({
+    type: 'DELETE',
+    id: '4'
+})
+
+store.dispatch({
+    type: 'UPDATE_NAME',
+    payload: {
+        id: '1',
+        name: 'Changed'
     }
 })

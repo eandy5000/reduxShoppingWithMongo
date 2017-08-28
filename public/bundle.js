@@ -11388,7 +11388,7 @@ var _store2 = _interopRequireDefault(_store);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _store2.default.subscribe(function () {
-    console.log('current state ', _store2.default.getState());
+    console.log('current state ', _store2.default.getState().books);
 });
 
 _store2.default.dispatch({
@@ -11401,6 +11401,19 @@ _store2.default.dispatch({
         id: '4',
         name: 'test',
         price: 11
+    }
+});
+
+_store2.default.dispatch({
+    type: 'DELETE',
+    id: '4'
+});
+
+_store2.default.dispatch({
+    type: 'UPDATE_NAME',
+    payload: {
+        id: '1',
+        name: 'Changed'
     }
 });
 
@@ -11569,11 +11582,27 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 exports.booksReducer = booksReducer;
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 // books reducer
+var startingBooks = [{
+    id: '1',
+    name: 'test',
+    price: 11
+}, {
+    id: '2',
+    name: 'Stuff',
+    price: 11
+}, {
+    id: '3',
+    name: 'Nonsense',
+    price: 11
+}];
 
 function booksReducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
@@ -11583,23 +11612,32 @@ function booksReducer() {
 
         //action. payload takes an array
         case 'FETCH':
-            return { books: [{
-                    id: '1',
-                    name: 'test',
-                    price: 11
-                }, {
-                    id: '2',
-                    name: 'test',
-                    price: 11
-                }, {
-                    id: '3',
-                    name: 'test',
-                    price: 11
-                }]
+            return { books: [].concat(_toConsumableArray(state.books), startingBooks)
 
                 //takes a single book object as action.payload
             };case 'POST':
             return { books: [].concat(_toConsumableArray(state.books), [action.payload]) };
+
+        case 'DELETE':
+            var id = action.id;
+            var arr = [].concat(_toConsumableArray(state.books));
+            var delInd = arr.findIndex(function (book) {
+                return book.id === id;
+            });
+
+            return { books: [].concat(_toConsumableArray(arr.slice(0, delInd)), _toConsumableArray(arr.slice(delInd + 1))) };
+
+        case 'UPDATE_NAME':
+            var upId = action.payload.id;
+            var upArr = [].concat(_toConsumableArray(state.books));
+            var upInd = upArr.findIndex(function (book) {
+                return upId === book.id;
+            });
+            console.log(upArr[upInd]);
+
+            return { books: [].concat(_toConsumableArray(upArr.slice(0, upInd)), [_extends({}, upArr[upInd], {
+                    name: action.payload.name
+                })], _toConsumableArray(upArr.slice(upInd + 1))) };
 
         default:
             return { books: state.books };
