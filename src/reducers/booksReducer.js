@@ -36,13 +36,9 @@ export function booksReducer(state={books: [] }, action) {
 
         case 'DELETE':
         const id = action.id
-        const arr = [...state.books]
-        const delInd = arr.findIndex((book) => book.id === id)
-
-        return {books: [
-            ...arr.slice(0, delInd),
-            ...arr.slice(delInd + 1)
-        ]}
+        const delArr = [...state.books]
+        
+        return {books: delArr.filter(book => id !== book.id)}
 
         case 'UPDATE_NAME':
         const upId = action.payload.id

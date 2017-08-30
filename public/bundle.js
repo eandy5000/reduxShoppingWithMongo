@@ -11620,12 +11620,11 @@ function booksReducer() {
 
         case 'DELETE':
             var id = action.id;
-            var arr = [].concat(_toConsumableArray(state.books));
-            var delInd = arr.findIndex(function (book) {
-                return book.id === id;
-            });
+            var delArr = [].concat(_toConsumableArray(state.books));
 
-            return { books: [].concat(_toConsumableArray(arr.slice(0, delInd)), _toConsumableArray(arr.slice(delInd + 1))) };
+            return { books: delArr.filter(function (book) {
+                    return id !== book.id;
+                }) };
 
         case 'UPDATE_NAME':
             var upId = action.payload.id;
