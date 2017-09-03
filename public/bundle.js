@@ -11412,8 +11412,11 @@ _store2.default.dispatch({
 _store2.default.dispatch({
     type: 'UPDATE_NAME',
     payload: {
-        id: '1',
-        name: 'Changed'
+        id: '3',
+        name: 'Changed',
+        price: 7,
+        secure: false,
+        'new id': '1234'
     }
 });
 
@@ -11627,20 +11630,39 @@ function booksReducer() {
                 }) };
 
         case 'UPDATE_NAME':
-            var upId = action.payload.id;
-            var upArr = [].concat(_toConsumableArray(state.books));
-            var upInd = upArr.findIndex(function (book) {
-                return upId === book.id;
-            });
-            console.log(upArr[upInd]);
 
-            return { books: [].concat(_toConsumableArray(upArr.slice(0, upInd)), [_extends({}, upArr[upInd], {
-                    name: action.payload.name
-                })], _toConsumableArray(upArr.slice(upInd + 1))) };
+            var upId = action.payload.id;
+            var changeItem = updateHelper(_extends({}, action.payload));
+
+            var upArr = [].concat(_toConsumableArray(state.books));
+            var upIndex = upArr.findIndex(function (i) {
+                return upId === i.id;
+            });
+
+            if (upIndex === -1) return { books: state.books };
+
+            return { books: [].concat(_toConsumableArray(upArr.slice(0, upIndex)), [_extends({}, upArr[upIndex], changeItem)], _toConsumableArray(upArr.slice(upIndex + 1))) };
 
         default:
             return { books: state.books };
     }
+}
+
+// only allows the user to update name and price
+function updateHelper(obj) {
+    for (var key in obj) {
+        switch (key) {
+            case 'name':
+                break;
+
+            case 'price':
+                break;
+
+            default:
+                delete obj[key];
+        }
+    }
+    return obj;
 }
 
 /***/ }),

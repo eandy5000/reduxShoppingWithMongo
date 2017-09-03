@@ -25,7 +25,10 @@ store.dispatch({
 store.dispatch({
     type: 'UPDATE_NAME',
     payload: {
-        id: '1',
-        name: 'Changed'
+        id: '3',
+        name: 'Changed',
+        price: 7,
+        secure: false,
+        'new id': '1234'
     }
 })

@@ -40,22 +40,44 @@ export function booksReducer(state={books: [] }, action) {
         
         return {books: delArr.filter(book => id !== book.id)}
 
+
+
         case 'UPDATE_NAME':
+        
         const upId = action.payload.id
+        const changeItem = updateHelper({...action.payload})
+
         const upArr = [...state.books]
-        const upInd = upArr.findIndex(book => upId === book.id)
-        console.log(upArr[upInd])
+        const upIndex = upArr.findIndex(i => upId === i.id)
+        
+        if(upIndex === -1) return {books: state.books}
 
         return {books: [
-            ...upArr.slice(0, upInd),
-            {
-                ...upArr[upInd],
-                name: action.payload.name
-            },
-            ...upArr.slice(upInd + 1)
+            ...upArr.slice(0, upIndex),
+            {...upArr[upIndex], ...changeItem},
+            ...upArr.slice(upIndex + 1)
         ]}
+        
 
         default:
         return {books: state.books}
     }
+}
+
+
+// only allows the user to update name and price
+function updateHelper(obj) {
+    for (var key in obj) {
+       switch(key) {
+         case 'name':
+         break;
+           
+         case 'price':
+         break;
+           
+         default:
+           delete obj[key]
+                      }
+    }
+    return obj  
 }
