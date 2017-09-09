@@ -11385,40 +11385,74 @@ var _store = __webpack_require__(55);
 
 var _store2 = _interopRequireDefault(_store);
 
+var _countActions = __webpack_require__(56);
+
+var _booksActions = __webpack_require__(233);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _store2.default.subscribe(function () {
     console.log('current state ', _store2.default.getState().books);
-});
+}
 
-_store2.default.dispatch({
-    type: 'FETCH'
-});
+// store.dispatch({
+//     type: 'FETCH'
+// })
 
-_store2.default.dispatch({
-    type: 'POST',
-    payload: {
-        id: '4',
-        name: 'test',
-        price: 11
+// store.dispatch({
+//     type: 'POST',
+// payload:             {
+//     id: '4',
+//     name: 'test',
+//     price: 11,
+//     bad: "do bad thing"
+// }
+// })
+
+// store.dispatch({
+//     type: 'DELETE',
+//     payload: {
+//         id: '1'
+//     }
+// })
+
+// store.dispatch({
+//     type: 'UPDATE_NAME',
+//     payload: {
+//         id: '3',
+//         name: 'Changed',
+//         price: 7,
+//         secure: false,
+//         new_id: '1234'
+//     }
+// })
+
+// store.dispatch({
+//     type: 'READ',
+//     payload: {
+//         id: '3'
+//     }
+// })
+
+);spatch(_booksActions.fetcher);
+spatch(_booksActions.poster, {
+    id: '4',
+    name: 'test',
+    price: 11,
+    bad: "do bad thing"
+});
+spatch(_booksActions.deleter, { id: '1' });
+
+function spatch() {
+    var fn = arguments.length <= 0 ? undefined : arguments[0];
+    var payload = arguments.length <= 1 ? undefined : arguments[1];
+
+    if (arguments.length > 1) {
+        return _store2.default.dispatch(fn(payload));
     }
-});
 
-_store2.default.dispatch({
-    type: 'DELETE',
-    id: '4'
-});
-
-_store2.default.dispatch({
-    type: 'UPDATE_NAME',
-    payload: {
-        id: '3',
-        name: 'Changed',
-        price: 7,
-        secure: false,
-        'new id': '1234'
-    }
-});
+    return _store2.default.dispatch(fn());
+}
 
 /***/ }),
 /* 101 */
@@ -11619,10 +11653,10 @@ function booksReducer() {
 
                 //takes a single book object as action.payload
             };case 'POST':
-            return { books: [].concat(_toConsumableArray(state.books), [action.payload]) };
+            return { books: [].concat(_toConsumableArray(state.books), [postValidator(action.payload)]) };
 
         case 'DELETE':
-            var id = action.id;
+            var id = action.payload.id;
             var delArr = [].concat(_toConsumableArray(state.books));
 
             return { books: delArr.filter(function (book) {
@@ -11645,14 +11679,35 @@ function booksReducer() {
 
         default:
             return { books: state.books };
+
     }
 }
 
+// HELPERS
 // only allows the user to update name and price
 function updateHelper(obj) {
     for (var key in obj) {
         switch (key) {
             case 'name':
+                break;
+
+            case 'price':
+                break;
+
+            default:
+                delete obj[key];
+        }
+    }
+    return obj;
+}
+
+function postValidator(obj) {
+    for (var key in obj) {
+        switch (key) {
+            case 'name':
+                break;
+
+            case 'id':
                 break;
 
             case 'price':
@@ -25153,6 +25208,39 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.fetcher = fetcher;
+exports.poster = poster;
+exports.deleter = deleter;
+function fetcher() {
+    return {
+        type: 'FETCH'
+    };
+}
+
+function poster(obj) {
+    return {
+        type: 'POST',
+        payload: obj
+    };
+}
+
+function deleter(obj) {
+    return {
+        type: 'DELETE',
+        payload: obj
+    };
+}
 
 /***/ })
 /******/ ]);

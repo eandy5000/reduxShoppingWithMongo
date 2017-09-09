@@ -31,16 +31,14 @@ export function booksReducer(state={books: [] }, action) {
         case 'POST':
         return {books: [
             ...state.books,
-            action.payload
+            postValidator(action.payload)
         ]}
 
         case 'DELETE':
-        const id = action.id
+        const id = action.payload.id
         const delArr = [...state.books]
         
         return {books: delArr.filter(book => id !== book.id)}
-
-
 
         case 'UPDATE_NAME':
         
@@ -58,13 +56,13 @@ export function booksReducer(state={books: [] }, action) {
             ...upArr.slice(upIndex + 1)
         ]}
         
-
         default:
         return {books: state.books}
+
     }
 }
 
-
+// HELPERS
 // only allows the user to update name and price
 function updateHelper(obj) {
     for (var key in obj) {
@@ -80,4 +78,23 @@ function updateHelper(obj) {
                       }
     }
     return obj  
+}
+
+function postValidator(obj) {
+    for (var key in obj) {
+        switch(key) {
+            case 'name':
+            break;
+
+            case 'id':
+            break;
+
+            case 'price':
+            break;
+            
+            default:
+            delete obj[key]
+        }
+    }
+    return obj
 }
