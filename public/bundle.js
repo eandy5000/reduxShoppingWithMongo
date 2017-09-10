@@ -11389,52 +11389,15 @@ var _countActions = __webpack_require__(56);
 
 var _booksActions = __webpack_require__(233);
 
+var _cartActions = __webpack_require__(235);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _store2.default.subscribe(function () {
-    console.log('current state ', _store2.default.getState().books);
-}
+    console.log('current state ', _store2.default.getState().cart);
+});
 
-// store.dispatch({
-//     type: 'FETCH'
-// })
-
-// store.dispatch({
-//     type: 'POST',
-// payload:             {
-//     id: '4',
-//     name: 'test',
-//     price: 11,
-//     bad: "do bad thing"
-// }
-// })
-
-// store.dispatch({
-//     type: 'DELETE',
-//     payload: {
-//         id: '1'
-//     }
-// })
-
-// store.dispatch({
-//     type: 'UPDATE_NAME',
-//     payload: {
-//         id: '3',
-//         name: 'Changed',
-//         price: 7,
-//         secure: false,
-//         new_id: '1234'
-//     }
-// })
-
-// store.dispatch({
-//     type: 'READ',
-//     payload: {
-//         id: '3'
-//     }
-// })
-
-);spatch(_booksActions.fetcher);
+spatch(_booksActions.fetcher);
 spatch(_booksActions.poster, {
     id: '4',
     name: 'test',
@@ -11442,6 +11405,11 @@ spatch(_booksActions.poster, {
     bad: "do bad thing"
 });
 spatch(_booksActions.deleter, { id: '1' });
+
+spatch(_cartActions.cartItemAdder, { id: '1' });
+spatch(_cartActions.cartItemAdder, { id: '2' });
+spatch(_cartActions.cartItemAdder, { id: '3' });
+spatch(_cartActions.cartItemDeleter, { id: '1' });
 
 function spatch() {
     var fn = arguments.length <= 0 ? undefined : arguments[0];
@@ -11770,9 +11738,12 @@ var _countReducer = __webpack_require__(105);
 
 var _booksReducer = __webpack_require__(104);
 
+var _cartReducer = __webpack_require__(234);
+
 exports.default = (0, _redux.combineReducers)({
     count: _countReducer.countReducer,
-    books: _booksReducer.booksReducer
+    books: _booksReducer.booksReducer,
+    cart: _cartReducer.cartReducer
 });
 
 /***/ }),
@@ -25239,6 +25210,70 @@ function deleter(obj) {
     return {
         type: 'DELETE',
         payload: obj
+    };
+}
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.cartReducer = cartReducer;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//cart reducer
+
+function cartReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { cart: [] };
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'ADD_TO_CART':
+            return { cart: [].concat(_toConsumableArray(state.cart), [action.payload]) };
+
+        case 'DELETE_FROM_CART':
+            var delId = action.payload.id;
+            var delArr = [].concat(_toConsumableArray(state.cart));
+            var delItemIndex = delArr.findIndex(function (item) {
+                return item.id === delId;
+            });
+
+            return { cart: [].concat(_toConsumableArray(delArr.slice(0, delItemIndex)), _toConsumableArray(delArr.slice(delItemIndex + 1))) };
+
+        default:
+            return state;
+    }
+}
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.cartItemAdder = cartItemAdder;
+exports.cartItemDeleter = cartItemDeleter;
+function cartItemAdder(payload) {
+    return {
+        type: 'ADD_TO_CART',
+        payload: payload
+    };
+}
+
+function cartItemDeleter(payload) {
+    return {
+        type: 'DELETE_FROM_CART',
+        payload: payload
     };
 }
 

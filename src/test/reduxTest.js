@@ -2,49 +2,11 @@ import store from '../store'
 
 import {addCount, subCount, resetCount} from '../actions/countActions'
 import {fetcher, poster, deleter} from '../actions/booksActions'
+import {cartItemAdder, cartItemDeleter} from '../actions/cartActions'
 
 store.subscribe(function() {
-    console.log('current state ', store.getState().books)
+    console.log('current state ', store.getState().cart)
 })
-
-// store.dispatch({
-//     type: 'FETCH'
-// })
-
-// store.dispatch({
-//     type: 'POST',
-    // payload:             {
-    //     id: '4',
-    //     name: 'test',
-    //     price: 11,
-    //     bad: "do bad thing"
-    // }
-// })
-
-// store.dispatch({
-//     type: 'DELETE',
-//     payload: {
-//         id: '1'
-//     }
-// })
-
-// store.dispatch({
-//     type: 'UPDATE_NAME',
-//     payload: {
-//         id: '3',
-//         name: 'Changed',
-//         price: 7,
-//         secure: false,
-//         new_id: '1234'
-//     }
-// })
-
-// store.dispatch({
-//     type: 'READ',
-//     payload: {
-//         id: '3'
-//     }
-// })
 
 spatch(fetcher)
 spatch(poster, {
@@ -55,7 +17,10 @@ spatch(poster, {
 })
 spatch(deleter, {id: '1'})
 
-
+spatch(cartItemAdder, {id: '1'})
+spatch(cartItemAdder, {id: '2'})
+spatch(cartItemAdder, {id: '3'})
+spatch(cartItemDeleter, {id: '1'})
 
 
 function spatch(...args) {
