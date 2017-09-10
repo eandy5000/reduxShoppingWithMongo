@@ -4,9 +4,9 @@ import {addCount, subCount, resetCount} from '../actions/countActions'
 import {fetcher, poster, deleter} from '../actions/booksActions'
 import {cartItemAdder, cartItemDeleter} from '../actions/cartActions'
 
-store.subscribe(function() {
-    console.log('current state ', store.getState().cart)
-})
+// store.subscribe(function() {
+//     console.log('current state ', store.getState().cart)
+// })
 
 spatch(fetcher)
 spatch(poster, {

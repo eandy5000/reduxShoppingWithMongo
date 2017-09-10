@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { addCount, subCount, resetCount } from '../actions/countActions'
 
 import CounterComponent from './parts/CounterComponent'
+import BooksList from './parts/BooksList'
 
 
 class App extends Component {
@@ -11,7 +12,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <CounterComponent />
+                <BooksList />
 
             </div>)
     }
